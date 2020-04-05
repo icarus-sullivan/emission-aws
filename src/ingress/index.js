@@ -4,7 +4,7 @@ const kinesis = require('../kinesis');
 const stream = kinesis({ streamName: process.env.FIREHOSE_NAME });
 
 module.exports.handler = async (evt) => {
-  const { type, payload } = evt;
+  const { id = uuid(), type, payload } = evt;
 
   // validate
   if (type === 'ignore') {
@@ -12,7 +12,7 @@ module.exports.handler = async (evt) => {
   }
 
   await stream.write({
-    id: uuid(),
+    id,
     content: { type, payload },
   });
 
