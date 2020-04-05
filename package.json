@@ -1,0 +1,28 @@
+{
+  "name": "emission",
+  "version": "1.0.0",
+  "description": "Kinesis processing using a pub sub architecture",
+  "main": "index.js",
+  "scripts": {
+    "sls": "npx serverless",
+    "deploy": "yarn sls deploy",
+    "destroy": "yarn sls remove"
+  },
+  "author": "Chris Sullivan",
+  "license": "MIT",
+  "devDependencies": {
+    "aws-sdk": "^2.653.0",
+    "serverless": "^1.67.0",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.3.0",
+    "eslint-plugin-import": "^2.17.2",
+    "eslint-plugin-prettier": "^3.1.1",
+    "prettier": "^1.18.2",
+    "serverless-iam-roles-per-function": "^2.0.2",
+    "serverless-plugin-modularize": "^1.0.5"
+  },
+  "dependencies": {
+    "uuid": "^7.0.3"
+  }
+}
