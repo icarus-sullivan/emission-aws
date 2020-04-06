@@ -4,11 +4,12 @@ const parseKinesisRecord = ({ kinesis }) => ({
 });
 
 module.exports.handler = async (evt) => {
+  console.log('time', Date.now());
   console.log('evt', JSON.stringify(evt, null, 2));
 
-  const records = (evt.Records || []).map(parseKinesisRecord);
+  // const records = (evt.Records || []).map(parseKinesisRecord);
 
-  console.log('parsed', JSON.stringify(records, null, 2));
+  // console.log('parsed', JSON.stringify(records, null, 2));
 
   return {
     statusCode: '200',

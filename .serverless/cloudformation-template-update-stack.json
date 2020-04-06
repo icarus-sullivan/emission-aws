@@ -169,7 +169,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/emission/dev/1586103841385-2020-04-05T16:24:01.385Z/emission.zip"
+          "S3Key": "serverless/emission/dev/1586172027426-2020-04-06T11:20:27.426Z/emission.zip"
         },
         "FunctionName": "emission-dev-fanout",
         "Handler": "src/fanout/index.handler",
@@ -188,14 +188,14 @@
         "FanoutLogGroup"
       ]
     },
-    "FanoutLambdaVersionhLrKLISuPZ8fj1ZwmkK6w3sOAl039L9OMSIqy7UWfk": {
+    "FanoutLambdaVersionVEDYnnD8HS5aYn8Yy4RKqBMxdz6spcLPNmsnzLcCkrc": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "FanoutLambdaFunction"
         },
-        "CodeSha256": "/a6LPcMVBRkGy8kFdtBV4gLQ7fjyHHv6XSJQefzfLgg="
+        "CodeSha256": "KqK+GpZHH8Yvw8b5ZVBWqKr5IPibIbKPWwvr1YNpjBY="
       }
     },
     "IngressLambdaFunction": {
@@ -205,7 +205,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/emission/dev/1586103841385-2020-04-05T16:24:01.385Z/emission.zip"
+          "S3Key": "serverless/emission/dev/1586172027426-2020-04-06T11:20:27.426Z/emission.zip"
         },
         "FunctionName": "emission-dev-ingress",
         "Handler": "src/ingress/index.handler",
@@ -235,14 +235,14 @@
         "IngressLogGroup"
       ]
     },
-    "IngressLambdaVersionQWnajGoPJjnBxFtAEPNMR3sYECNe5CpmlNUgvbdE": {
+    "IngressLambdaVersionlUG9mOAwDPatemL7XMzHMHcr1l6aLjM4IEJGe7vKk": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "IngressLambdaFunction"
         },
-        "CodeSha256": "/a6LPcMVBRkGy8kFdtBV4gLQ7fjyHHv6XSJQefzfLgg="
+        "CodeSha256": "KqK+GpZHH8Yvw8b5ZVBWqKr5IPibIbKPWwvr1YNpjBY="
       }
     },
     "FanoutEventSourceMappingKinesisFirehoseStream": {
@@ -460,13 +460,13 @@
     "FanoutLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "FanoutLambdaVersionhLrKLISuPZ8fj1ZwmkK6w3sOAl039L9OMSIqy7UWfk"
+        "Ref": "FanoutLambdaVersionVEDYnnD8HS5aYn8Yy4RKqBMxdz6spcLPNmsnzLcCkrc"
       }
     },
     "IngressLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "IngressLambdaVersionQWnajGoPJjnBxFtAEPNMR3sYECNe5CpmlNUgvbdE"
+        "Ref": "IngressLambdaVersionlUG9mOAwDPatemL7XMzHMHcr1l6aLjM4IEJGe7vKk"
       }
     }
   }
