@@ -2,12 +2,23 @@ service: emission
 
 plugins:
   - serverless-plugin-modularize
+  - serverless-webpack
   - serverless-iam-roles-per-function
+  - serverless-offline
+
+package:
+  individually: true
 
 custom:
   stage: ${self:provider.stage}
   modularize:
     glob: 'src/**/*.module.yml' 
+
+  webpack:
+    packager: 'yarn'
+    includeModules:
+      forceExclude:
+        - aws-sdk
 
 provider:
   name: aws

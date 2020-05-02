@@ -1,0 +1,32 @@
+
+provider:
+  environment:
+    REGISTRY_BUCKET: ${self:custom.registry.name}
+
+custom:
+  registry:
+    name: registry-${self:custom.stage}-bucket
+
+    arn:
+      Fn::GetAtt:
+        - RegistryBucket
+        - Arn
+
+    role:
+      Effect: Allow
+      Action:
+        - 's3:*'
+      Resource: ${self:custom.registry.arn}
+
+resources:
+  Resources: 
+    RegistryBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:custom.csvBucketName}
+        LifecycleConfiguration:
+          Rules:
+          - Id: ExpireOldData
+            Prefix: ''
+            Status: Enabled
+            ExpirationInDays: 15

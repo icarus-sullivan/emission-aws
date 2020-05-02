@@ -6,23 +6,36 @@
   "scripts": {
     "sls": "npx serverless",
     "deploy": "yarn sls deploy",
-    "destroy": "yarn sls remove"
+    "destroy": "yarn sls remove",
+    "offline": "yarn sls offline"
   },
   "author": "Chris Sullivan",
   "license": "MIT",
   "devDependencies": {
-    "aws-sdk": "^2.653.0",
-    "serverless": "^1.67.0",
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb-base": "^14.0.0",
-    "eslint-config-prettier": "^6.3.0",
-    "eslint-plugin-import": "^2.17.2",
-    "eslint-plugin-prettier": "^3.1.1",
-    "prettier": "^1.18.2",
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-prettier": "^3.1.3",
+    "prettier": "^2.0.5",
+    "serverless": "^1.69.0",
     "serverless-iam-roles-per-function": "^2.0.2",
-    "serverless-plugin-modularize": "^1.0.5"
+    "serverless-offline": "^6.1.4",
+    "serverless-plugin-modularize": "^1.0.5",
+    "serverless-webpack": "^5.3.1",
+    "webpack": "^4.43.0",
+    "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
+    "@teleology/lambda-api": "^0.1.0",
+    "aws-sdk": "^2.668.0",
+    "graphql": "^15.0.0",
+    "graphql-tools": "^5.0.0",
+    "lodash": "^4.17.15",
     "uuid": "^7.0.3"
   }
 }

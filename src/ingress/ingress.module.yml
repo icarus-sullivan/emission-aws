@@ -3,8 +3,5 @@ functions:
   ingress:
     handler: src/ingress/index.handler
     timeout: 30
-    environment:
-      FIREHOSE_ARN: ${self:custom.firehose.arn}
-      FIREHOSE_NAME: ${self:custom.firehose.name}
     iamRoleStatements:
-      - ${self:custom.firehose.permissions.write}
+      - ${self:custom.registry.role}
