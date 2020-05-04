@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "sls": "npx serverless",
-    "deploy": "yarn sls deploy",
-    "destroy": "yarn sls remove",
-    "offline": "yarn sls offline"
+    "deploy": "npx serverless deploy",
+    "destroy": "npx serverless remove",
+    "offline": "npx serverless offline"
   },
   "author": "Chris Sullivan",
   "license": "MIT",
@@ -26,6 +26,7 @@
     "serverless-iam-roles-per-function": "^2.0.2",
     "serverless-offline": "^6.1.4",
     "serverless-plugin-modularize": "^1.0.5",
+    "serverless-prune-plugin": "^1.4.2",
     "serverless-webpack": "^5.3.1",
     "webpack": "^4.43.0",
     "webpack-node-externals": "^1.7.2"
@@ -33,8 +34,7 @@
   "dependencies": {
     "@teleology/lambda-api": "^0.1.0",
     "aws-sdk": "^2.668.0",
-    "graphql": "^15.0.0",
-    "graphql-tools": "^5.0.0",
+    "axios": "^0.19.2",
     "lodash": "^4.17.15",
     "uuid": "^7.0.3"
   }

@@ -15,18 +15,18 @@ custom:
     role:
       Effect: Allow
       Action:
-        - 's3:*'
-      Resource: ${self:custom.registry.arn}
+        - 's3:PutObject'
+        - 's3:PutObjectAcl'
+        - 's3:GetObject'
+        - 's3:GetObjectAcl'
+        - 's3:DeleteObject'
+      Resource:
+        - arn:aws:s3:::${self:custom.registry.name}
+        - arn:aws:s3:::${self:custom.registry.name}/*
 
 resources:
   Resources: 
     RegistryBucket:
       Type: AWS::S3::Bucket
       Properties:
-        BucketName: ${self:custom.csvBucketName}
-        LifecycleConfiguration:
-          Rules:
-          - Id: ExpireOldData
-            Prefix: ''
-            Status: Enabled
-            ExpirationInDays: 15
+        BucketName: ${self:custom.registry.name}

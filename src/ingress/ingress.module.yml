@@ -1,7 +1,11 @@
 
 functions: 
   ingress:
-    handler: src/ingress/index.handler
+    handler: src/ingress/index.default
     timeout: 30
+    events:
+      - http:
+          path: ingress
+          method: put
     iamRoleStatements:
       - ${self:custom.registry.role}

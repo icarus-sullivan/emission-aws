@@ -5,6 +5,7 @@ plugins:
   - serverless-webpack
   - serverless-iam-roles-per-function
   - serverless-offline
+  - serverless-prune-plugin
 
 package:
   individually: true
@@ -12,7 +13,11 @@ package:
 custom:
   stage: ${self:provider.stage}
   modularize:
-    glob: 'src/**/*.module.yml' 
+    glob: 'src/**/*.module.yml'
+
+  prune:
+    automatic: true
+    number: 1
 
   webpack:
     packager: 'yarn'

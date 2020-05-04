@@ -14,6 +14,9 @@
       "memorySize": 1536,
       "versionFunctions": true,
       "remoteFunctionData": null,
+      "environment": {
+        "REGISTRY_BUCKET": "registry-dev-bucket"
+      },
       "compiledCloudFormationTemplate": {
         "AWSTemplateFormatVersion": "2010-09-09",
         "Description": "The AWS CloudFormation template for this Serverless application",
@@ -72,10 +75,38 @@
               }
             }
           },
-          "FanoutLogGroup": {
+          "CreateConsumerLogGroup": {
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
-              "LogGroupName": "/aws/lambda/emission-dev-fanout",
+              "LogGroupName": "/aws/lambda/emission-dev-createConsumer",
+              "RetentionInDays": 1
+            }
+          },
+          "UpdateConsumerLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/emission-dev-updateConsumer",
+              "RetentionInDays": 1
+            }
+          },
+          "RemoveConsumerLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/emission-dev-removeConsumer",
+              "RetentionInDays": 1
+            }
+          },
+          "GetConsumersLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/emission-dev-getConsumers",
+              "RetentionInDays": 1
+            }
+          },
+          "DeleteSubscriptionLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/emission-dev-deleteSubscription",
               "RetentionInDays": 1
             }
           },
@@ -83,6 +114,13 @@
             "Type": "AWS::Logs::LogGroup",
             "Properties": {
               "LogGroupName": "/aws/lambda/emission-dev-ingress",
+              "RetentionInDays": 1
+            }
+          },
+          "WebhookLogGroup": {
+            "Type": "AWS::Logs::LogGroup",
+            "Properties": {
+              "LogGroupName": "/aws/lambda/emission-dev-webhook",
               "RetentionInDays": 1
             }
           },
@@ -141,23 +179,6 @@
                             "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/emission-dev*:*:*"
                           }
                         ]
-                      },
-                      {
-                        "Effect": "Allow",
-                        "Action": [
-                          "kinesis:GetRecords",
-                          "kinesis:GetShardIterator",
-                          "kinesis:DescribeStream",
-                          "kinesis:ListStreams"
-                        ],
-                        "Resource": [
-                          {
-                            "Fn::GetAtt": [
-                              "FirehoseStream",
-                              "Arn"
-                            ]
-                          }
-                        ]
                       }
                     ]
                   }
@@ -178,40 +199,209 @@
               }
             }
           },
-          "FanoutLambdaFunction": {
+          "CreateConsumerLambdaFunction": {
             "Type": "AWS::Lambda::Function",
             "Properties": {
               "Code": {
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/emission/dev/1586172027426-2020-04-06T11:20:27.426Z/emission.zip"
+                "S3Key": "serverless/emission/dev/1588564505901-2020-05-04T03:55:05.901Z/createConsumer.zip"
               },
-              "FunctionName": "emission-dev-fanout",
-              "Handler": "src/fanout/index.handler",
+              "FunctionName": "emission-dev-createConsumer",
+              "Handler": "src/consumers/create.default",
               "MemorySize": 1536,
               "Role": {
                 "Fn::GetAtt": [
-                  "FanoutIamRoleLambdaExecution",
+                  "CreateConsumerIamRoleLambdaExecution",
                   "Arn"
                 ]
               },
               "Runtime": "nodejs12.x",
-              "Timeout": 900
+              "Timeout": 30,
+              "Environment": {
+                "Variables": {
+                  "REGISTRY_BUCKET": "registry-dev-bucket"
+                }
+              }
             },
             "DependsOn": [
-              "FanoutIamRoleLambdaExecution",
-              "FanoutLogGroup"
+              "CreateConsumerIamRoleLambdaExecution",
+              "CreateConsumerLogGroup"
             ]
           },
-          "FanoutLambdaVersionVEDYnnD8HS5aYn8Yy4RKqBMxdz6spcLPNmsnzLcCkrc": {
+          "CreateConsumerLambdaVersionCPUTXJ2bTFXxeo1esy45HkvEF5a3TjoFtA5WhkFXE": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
-                "Ref": "FanoutLambdaFunction"
+                "Ref": "CreateConsumerLambdaFunction"
               },
-              "CodeSha256": "KqK+GpZHH8Yvw8b5ZVBWqKr5IPibIbKPWwvr1YNpjBY="
+              "CodeSha256": "Owl5l6U2JcXh+grL6kFRODfywfc22jxC0HfSLcwqJmQ="
+            }
+          },
+          "UpdateConsumerLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/emission/dev/1588564505901-2020-05-04T03:55:05.901Z/updateConsumer.zip"
+              },
+              "FunctionName": "emission-dev-updateConsumer",
+              "Handler": "src/consumers/update.default",
+              "MemorySize": 1536,
+              "Role": {
+                "Fn::GetAtt": [
+                  "UpdateConsumerIamRoleLambdaExecution",
+                  "Arn"
+                ]
+              },
+              "Runtime": "nodejs12.x",
+              "Timeout": 30,
+              "Environment": {
+                "Variables": {
+                  "REGISTRY_BUCKET": "registry-dev-bucket"
+                }
+              }
+            },
+            "DependsOn": [
+              "UpdateConsumerIamRoleLambdaExecution",
+              "UpdateConsumerLogGroup"
+            ]
+          },
+          "UpdateConsumerLambdaVersionlveAxZpy6FJ58qc5WyzcYNXISGaCCbcloFT7O2n2Jk": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "UpdateConsumerLambdaFunction"
+              },
+              "CodeSha256": "hL4rrMGda7fU15wrkms97CDJ43xDQPlvcLCm2fphHkw="
+            }
+          },
+          "RemoveConsumerLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/emission/dev/1588564505901-2020-05-04T03:55:05.901Z/removeConsumer.zip"
+              },
+              "FunctionName": "emission-dev-removeConsumer",
+              "Handler": "src/consumers/remove.default",
+              "MemorySize": 1536,
+              "Role": {
+                "Fn::GetAtt": [
+                  "RemoveConsumerIamRoleLambdaExecution",
+                  "Arn"
+                ]
+              },
+              "Runtime": "nodejs12.x",
+              "Timeout": 30,
+              "Environment": {
+                "Variables": {
+                  "REGISTRY_BUCKET": "registry-dev-bucket"
+                }
+              }
+            },
+            "DependsOn": [
+              "RemoveConsumerIamRoleLambdaExecution",
+              "RemoveConsumerLogGroup"
+            ]
+          },
+          "RemoveConsumerLambdaVersionUEPT930VhOd1YTb8nQxPl8j7vyp8aRp3WGF6ZgDhwQ": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "RemoveConsumerLambdaFunction"
+              },
+              "CodeSha256": "XmYBpg23lSgd4MMkTULFyqX09eFhfgMYYd0urm7AA4w="
+            }
+          },
+          "GetConsumersLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/emission/dev/1588564505901-2020-05-04T03:55:05.901Z/getConsumers.zip"
+              },
+              "FunctionName": "emission-dev-getConsumers",
+              "Handler": "src/consumers/list.default",
+              "MemorySize": 1536,
+              "Role": {
+                "Fn::GetAtt": [
+                  "GetConsumersIamRoleLambdaExecution",
+                  "Arn"
+                ]
+              },
+              "Runtime": "nodejs12.x",
+              "Timeout": 30,
+              "Environment": {
+                "Variables": {
+                  "REGISTRY_BUCKET": "registry-dev-bucket"
+                }
+              }
+            },
+            "DependsOn": [
+              "GetConsumersIamRoleLambdaExecution",
+              "GetConsumersLogGroup"
+            ]
+          },
+          "GetConsumersLambdaVersionmctCSKfZ53h5xZYfZa3acTE90fwMhurNCz9k4o8Pgg": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "GetConsumersLambdaFunction"
+              },
+              "CodeSha256": "YLIrNaubNKasg87S01Z8QxI/E/VFqPJ6bNGo6t7zobA="
+            }
+          },
+          "DeleteSubscriptionLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
+            "Properties": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/emission/dev/1588564505901-2020-05-04T03:55:05.901Z/deleteSubscription.zip"
+              },
+              "FunctionName": "emission-dev-deleteSubscription",
+              "Handler": "src/consumers/destroy.default",
+              "MemorySize": 1536,
+              "Role": {
+                "Fn::GetAtt": [
+                  "DeleteSubscriptionIamRoleLambdaExecution",
+                  "Arn"
+                ]
+              },
+              "Runtime": "nodejs12.x",
+              "Timeout": 30,
+              "Environment": {
+                "Variables": {
+                  "REGISTRY_BUCKET": "registry-dev-bucket"
+                }
+              }
+            },
+            "DependsOn": [
+              "DeleteSubscriptionIamRoleLambdaExecution",
+              "DeleteSubscriptionLogGroup"
+            ]
+          },
+          "DeleteSubscriptionLambdaVersionl7g84KZ7f6zhGswOYGiDp8MHorLbrqWchrPIJH1Z0k": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "DeleteSubscriptionLambdaFunction"
+              },
+              "CodeSha256": "kUi61zigzyzhp42WmgcxoVJ/lhpHPyE7W9tDrF54FoM="
             }
           },
           "IngressLambdaFunction": {
@@ -221,10 +411,10 @@
                 "S3Bucket": {
                   "Ref": "ServerlessDeploymentBucket"
                 },
-                "S3Key": "serverless/emission/dev/1586172027426-2020-04-06T11:20:27.426Z/emission.zip"
+                "S3Key": "serverless/emission/dev/1588564505901-2020-05-04T03:55:05.901Z/ingress.zip"
               },
               "FunctionName": "emission-dev-ingress",
-              "Handler": "src/ingress/index.handler",
+              "Handler": "src/ingress/index.default",
               "MemorySize": 1536,
               "Role": {
                 "Fn::GetAtt": [
@@ -236,13 +426,7 @@
               "Timeout": 30,
               "Environment": {
                 "Variables": {
-                  "FIREHOSE_ARN": {
-                    "Fn::GetAtt": [
-                      "FirehoseStream",
-                      "Arn"
-                    ]
-                  },
-                  "FIREHOSE_NAME": "firehose-dev"
+                  "REGISTRY_BUCKET": "registry-dev-bucket"
                 }
               }
             },
@@ -251,38 +435,708 @@
               "IngressLogGroup"
             ]
           },
-          "IngressLambdaVersionlUG9mOAwDPatemL7XMzHMHcr1l6aLjM4IEJGe7vKk": {
+          "IngressLambdaVersionOPo7AsE2RJ3ssvvB3XZdijN6yVQ6Op9OoFIGq45rcQU": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "IngressLambdaFunction"
               },
-              "CodeSha256": "KqK+GpZHH8Yvw8b5ZVBWqKr5IPibIbKPWwvr1YNpjBY="
+              "CodeSha256": "aD4MCrQY2s7qqKZ4g6dzA0MQ/E2wNT2QKGcdHPiaNoM="
             }
           },
-          "FanoutEventSourceMappingKinesisFirehoseStream": {
-            "Type": "AWS::Lambda::EventSourceMapping",
-            "DependsOn": "FanoutIamRoleLambdaExecution",
+          "WebhookLambdaFunction": {
+            "Type": "AWS::Lambda::Function",
             "Properties": {
-              "BatchSize": 50,
-              "EventSourceArn": {
+              "Code": {
+                "S3Bucket": {
+                  "Ref": "ServerlessDeploymentBucket"
+                },
+                "S3Key": "serverless/emission/dev/1588564505901-2020-05-04T03:55:05.901Z/webhook.zip"
+              },
+              "FunctionName": "emission-dev-webhook",
+              "Handler": "src/webhook/index.default",
+              "MemorySize": 1536,
+              "Role": {
                 "Fn::GetAtt": [
-                  "FirehoseStream",
+                  "IamRoleLambdaExecution",
                   "Arn"
                 ]
               },
+              "Runtime": "nodejs12.x",
+              "Timeout": 30,
+              "Environment": {
+                "Variables": {
+                  "REGISTRY_BUCKET": "registry-dev-bucket"
+                }
+              }
+            },
+            "DependsOn": [
+              "WebhookLogGroup",
+              "IamRoleLambdaExecution"
+            ]
+          },
+          "WebhookLambdaVersion8WDfPjiGgBSAFK4Wv4nREZpFW5fRZeAyRymrPsxC3j4": {
+            "Type": "AWS::Lambda::Version",
+            "DeletionPolicy": "Retain",
+            "Properties": {
+              "FunctionName": {
+                "Ref": "WebhookLambdaFunction"
+              },
+              "CodeSha256": "QHWJbAi1/FgwYFvBY8TOckXr8aH3L6jv/IuZt1VQAqc="
+            }
+          },
+          "ApiGatewayRestApi": {
+            "Type": "AWS::ApiGateway::RestApi",
+            "Properties": {
+              "Name": "dev-emission",
+              "EndpointConfiguration": {
+                "Types": [
+                  "EDGE"
+                ]
+              },
+              "Policy": ""
+            }
+          },
+          "ApiGatewayResourceConsumer": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Fn::GetAtt": [
+                  "ApiGatewayRestApi",
+                  "RootResourceId"
+                ]
+              },
+              "PathPart": "consumer",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceSubscription": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Fn::GetAtt": [
+                  "ApiGatewayRestApi",
+                  "RootResourceId"
+                ]
+              },
+              "PathPart": "subscription",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceIngress": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Fn::GetAtt": [
+                  "ApiGatewayRestApi",
+                  "RootResourceId"
+                ]
+              },
+              "PathPart": "ingress",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayResourceWebhook": {
+            "Type": "AWS::ApiGateway::Resource",
+            "Properties": {
+              "ParentId": {
+                "Fn::GetAtt": [
+                  "ApiGatewayRestApi",
+                  "RootResourceId"
+                ]
+              },
+              "PathPart": "webhook",
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              }
+            }
+          },
+          "ApiGatewayMethodConsumerPost": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "POST",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceConsumer"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "CreateConsumerLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            }
+          },
+          "ApiGatewayMethodConsumerPut": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "PUT",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceConsumer"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "UpdateConsumerLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            }
+          },
+          "ApiGatewayMethodConsumerDelete": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "DELETE",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceConsumer"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "RemoveConsumerLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            }
+          },
+          "ApiGatewayMethodConsumerGet": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "GET",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceConsumer"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "GetConsumersLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            }
+          },
+          "ApiGatewayMethodSubscriptionDelete": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "DELETE",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceSubscription"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "DeleteSubscriptionLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            }
+          },
+          "ApiGatewayMethodIngressPut": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "PUT",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceIngress"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "IngressLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            }
+          },
+          "ApiGatewayMethodWebhookGet": {
+            "Type": "AWS::ApiGateway::Method",
+            "Properties": {
+              "HttpMethod": "GET",
+              "RequestParameters": {},
+              "ResourceId": {
+                "Ref": "ApiGatewayResourceWebhook"
+              },
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "ApiKeyRequired": false,
+              "AuthorizationType": "NONE",
+              "Integration": {
+                "IntegrationHttpMethod": "POST",
+                "Type": "AWS_PROXY",
+                "Uri": {
+                  "Fn::Join": [
+                    "",
+                    [
+                      "arn:",
+                      {
+                        "Ref": "AWS::Partition"
+                      },
+                      ":apigateway:",
+                      {
+                        "Ref": "AWS::Region"
+                      },
+                      ":lambda:path/2015-03-31/functions/",
+                      {
+                        "Fn::GetAtt": [
+                          "WebhookLambdaFunction",
+                          "Arn"
+                        ]
+                      },
+                      "/invocations"
+                    ]
+                  ]
+                }
+              },
+              "MethodResponses": []
+            }
+          },
+          "ApiGatewayDeployment1588564483706": {
+            "Type": "AWS::ApiGateway::Deployment",
+            "Properties": {
+              "RestApiId": {
+                "Ref": "ApiGatewayRestApi"
+              },
+              "StageName": "dev"
+            },
+            "DependsOn": [
+              "ApiGatewayMethodConsumerPost",
+              "ApiGatewayMethodConsumerPut",
+              "ApiGatewayMethodConsumerDelete",
+              "ApiGatewayMethodConsumerGet",
+              "ApiGatewayMethodSubscriptionDelete",
+              "ApiGatewayMethodIngressPut",
+              "ApiGatewayMethodWebhookGet"
+            ]
+          },
+          "CreateConsumerLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
               "FunctionName": {
                 "Fn::GetAtt": [
-                  "FanoutLambdaFunction",
+                  "CreateConsumerLambdaFunction",
                   "Arn"
                 ]
               },
-              "StartingPosition": "LATEST",
-              "Enabled": "True"
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
             }
           },
-          "FanoutIamRoleLambdaExecution": {
+          "UpdateConsumerLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "UpdateConsumerLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "RemoveConsumerLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "RemoveConsumerLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "GetConsumersLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "GetConsumersLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "DeleteSubscriptionLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "DeleteSubscriptionLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "IngressLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "IngressLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "WebhookLambdaPermissionApiGateway": {
+            "Type": "AWS::Lambda::Permission",
+            "Properties": {
+              "FunctionName": {
+                "Fn::GetAtt": [
+                  "WebhookLambdaFunction",
+                  "Arn"
+                ]
+              },
+              "Action": "lambda:InvokeFunction",
+              "Principal": "apigateway.amazonaws.com",
+              "SourceArn": {
+                "Fn::Join": [
+                  "",
+                  [
+                    "arn:",
+                    {
+                      "Ref": "AWS::Partition"
+                    },
+                    ":execute-api:",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    ":",
+                    {
+                      "Ref": "AWS::AccountId"
+                    },
+                    ":",
+                    {
+                      "Ref": "ApiGatewayRestApi"
+                    },
+                    "/*/*"
+                  ]
+                ]
+              }
+            }
+          },
+          "CreateConsumerIamRoleLambdaExecution": {
             "Type": "AWS::IAM::Role",
             "Properties": {
               "AssumeRolePolicyDocument": {
@@ -323,37 +1177,23 @@
                         ],
                         "Resource": [
                           {
-                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/emission-dev-fanout:*:*"
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/emission-dev-createConsumer:*:*"
                           }
                         ]
                       },
                       {
                         "Effect": "Allow",
                         "Action": [
-                          "kinesis:GetRecords",
-                          "kinesis:GetShardIterator",
-                          "kinesis:DescribeStream",
-                          "kinesis:ListStreams"
+                          "s3:PutObject",
+                          "s3:PutObjectAcl",
+                          "s3:GetObject",
+                          "s3:GetObjectAcl",
+                          "s3:DeleteObject"
                         ],
                         "Resource": [
-                          {
-                            "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"IamRoleLambdaExecution\"][\"Properties\"][\"Policies\"][0][\"PolicyDocument\"][\"Statement\"][2][\"Resource\"][0]"
-                          }
+                          "arn:aws:s3:::registry-dev-bucket",
+                          "arn:aws:s3:::registry-dev-bucket/*"
                         ]
-                      },
-                      {
-                        "Effect": "Allow",
-                        "Action": [
-                          "kinesis:DescribeStream",
-                          "kinesis:GetShardIterator",
-                          "kinesis:GetRecords"
-                        ],
-                        "Resource": {
-                          "Fn::GetAtt": [
-                            "FirehoseStream",
-                            "Arn"
-                          ]
-                        }
                       }
                     ]
                   }
@@ -368,7 +1208,327 @@
                     {
                       "Ref": "AWS::Region"
                     },
-                    "fanout",
+                    "createConsumer",
+                    "lambdaRole"
+                  ]
+                ]
+              },
+              "ManagedPolicyArns": []
+            }
+          },
+          "UpdateConsumerIamRoleLambdaExecution": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+              "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Principal": {
+                      "Service": [
+                        "lambda.amazonaws.com"
+                      ]
+                    },
+                    "Action": [
+                      "sts:AssumeRole"
+                    ]
+                  }
+                ]
+              },
+              "Policies": [
+                {
+                  "PolicyName": {
+                    "Fn::Join": [
+                      "-",
+                      [
+                        "emission-dev",
+                        "lambda"
+                      ]
+                    ]
+                  },
+                  "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "logs:CreateLogStream",
+                          "logs:PutLogEvents"
+                        ],
+                        "Resource": [
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/emission-dev-updateConsumer:*:*"
+                          }
+                        ]
+                      },
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "s3:PutObject",
+                          "s3:PutObjectAcl",
+                          "s3:GetObject",
+                          "s3:GetObjectAcl",
+                          "s3:DeleteObject"
+                        ],
+                        "Resource": [
+                          "arn:aws:s3:::registry-dev-bucket",
+                          "arn:aws:s3:::registry-dev-bucket/*"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ],
+              "Path": "/",
+              "RoleName": {
+                "Fn::Join": [
+                  "-",
+                  [
+                    "emission-dev",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    "updateConsumer",
+                    "lambdaRole"
+                  ]
+                ]
+              },
+              "ManagedPolicyArns": []
+            }
+          },
+          "RemoveConsumerIamRoleLambdaExecution": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+              "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Principal": {
+                      "Service": [
+                        "lambda.amazonaws.com"
+                      ]
+                    },
+                    "Action": [
+                      "sts:AssumeRole"
+                    ]
+                  }
+                ]
+              },
+              "Policies": [
+                {
+                  "PolicyName": {
+                    "Fn::Join": [
+                      "-",
+                      [
+                        "emission-dev",
+                        "lambda"
+                      ]
+                    ]
+                  },
+                  "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "logs:CreateLogStream",
+                          "logs:PutLogEvents"
+                        ],
+                        "Resource": [
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/emission-dev-removeConsumer:*:*"
+                          }
+                        ]
+                      },
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "s3:PutObject",
+                          "s3:PutObjectAcl",
+                          "s3:GetObject",
+                          "s3:GetObjectAcl",
+                          "s3:DeleteObject"
+                        ],
+                        "Resource": [
+                          "arn:aws:s3:::registry-dev-bucket",
+                          "arn:aws:s3:::registry-dev-bucket/*"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ],
+              "Path": "/",
+              "RoleName": {
+                "Fn::Join": [
+                  "-",
+                  [
+                    "emission-dev",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    "removeConsumer",
+                    "lambdaRole"
+                  ]
+                ]
+              },
+              "ManagedPolicyArns": []
+            }
+          },
+          "GetConsumersIamRoleLambdaExecution": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+              "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Principal": {
+                      "Service": [
+                        "lambda.amazonaws.com"
+                      ]
+                    },
+                    "Action": [
+                      "sts:AssumeRole"
+                    ]
+                  }
+                ]
+              },
+              "Policies": [
+                {
+                  "PolicyName": {
+                    "Fn::Join": [
+                      "-",
+                      [
+                        "emission-dev",
+                        "lambda"
+                      ]
+                    ]
+                  },
+                  "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "logs:CreateLogStream",
+                          "logs:PutLogEvents"
+                        ],
+                        "Resource": [
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/emission-dev-getConsumers:*:*"
+                          }
+                        ]
+                      },
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "s3:PutObject",
+                          "s3:PutObjectAcl",
+                          "s3:GetObject",
+                          "s3:GetObjectAcl",
+                          "s3:DeleteObject"
+                        ],
+                        "Resource": [
+                          "arn:aws:s3:::registry-dev-bucket",
+                          "arn:aws:s3:::registry-dev-bucket/*"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ],
+              "Path": "/",
+              "RoleName": {
+                "Fn::Join": [
+                  "-",
+                  [
+                    "emission-dev",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    "getConsumers",
+                    "lambdaRole"
+                  ]
+                ]
+              },
+              "ManagedPolicyArns": []
+            }
+          },
+          "DeleteSubscriptionIamRoleLambdaExecution": {
+            "Type": "AWS::IAM::Role",
+            "Properties": {
+              "AssumeRolePolicyDocument": {
+                "Version": "2012-10-17",
+                "Statement": [
+                  {
+                    "Effect": "Allow",
+                    "Principal": {
+                      "Service": [
+                        "lambda.amazonaws.com"
+                      ]
+                    },
+                    "Action": [
+                      "sts:AssumeRole"
+                    ]
+                  }
+                ]
+              },
+              "Policies": [
+                {
+                  "PolicyName": {
+                    "Fn::Join": [
+                      "-",
+                      [
+                        "emission-dev",
+                        "lambda"
+                      ]
+                    ]
+                  },
+                  "PolicyDocument": {
+                    "Version": "2012-10-17",
+                    "Statement": [
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "logs:CreateLogStream",
+                          "logs:PutLogEvents"
+                        ],
+                        "Resource": [
+                          {
+                            "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/emission-dev-deleteSubscription:*:*"
+                          }
+                        ]
+                      },
+                      {
+                        "Effect": "Allow",
+                        "Action": [
+                          "s3:PutObject",
+                          "s3:PutObjectAcl",
+                          "s3:GetObject",
+                          "s3:GetObjectAcl",
+                          "s3:DeleteObject"
+                        ],
+                        "Resource": [
+                          "arn:aws:s3:::registry-dev-bucket",
+                          "arn:aws:s3:::registry-dev-bucket/*"
+                        ]
+                      }
+                    ]
+                  }
+                }
+              ],
+              "Path": "/",
+              "RoleName": {
+                "Fn::Join": [
+                  "-",
+                  [
+                    "emission-dev",
+                    {
+                      "Ref": "AWS::Region"
+                    },
+                    "deleteSubscription",
                     "lambdaRole"
                   ]
                 ]
@@ -424,16 +1584,16 @@
                       {
                         "Effect": "Allow",
                         "Action": [
-                          "kinesis:DescribeStream",
-                          "kinesis:PutRecord",
-                          "kinesis:PutRecords"
+                          "s3:PutObject",
+                          "s3:PutObjectAcl",
+                          "s3:GetObject",
+                          "s3:GetObjectAcl",
+                          "s3:DeleteObject"
                         ],
-                        "Resource": {
-                          "Fn::GetAtt": [
-                            "FirehoseStream",
-                            "Arn"
-                          ]
-                        }
+                        "Resource": [
+                          "arn:aws:s3:::registry-dev-bucket",
+                          "arn:aws:s3:::registry-dev-bucket/*"
+                        ]
                       }
                     ]
                   }
@@ -456,11 +1616,10 @@
               "ManagedPolicyArns": []
             }
           },
-          "FirehoseStream": {
-            "Type": "AWS::Kinesis::Stream",
+          "RegistryBucket": {
+            "Type": "AWS::S3::Bucket",
             "Properties": {
-              "Name": "firehose-dev",
-              "ShardCount": 5
+              "BucketName": "registry-dev-bucket"
             }
           }
         },
@@ -470,16 +1629,69 @@
               "Ref": "ServerlessDeploymentBucket"
             }
           },
-          "FanoutLambdaFunctionQualifiedArn": {
+          "CreateConsumerLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "FanoutLambdaVersionVEDYnnD8HS5aYn8Yy4RKqBMxdz6spcLPNmsnzLcCkrc"
+              "Ref": "CreateConsumerLambdaVersionCPUTXJ2bTFXxeo1esy45HkvEF5a3TjoFtA5WhkFXE"
+            }
+          },
+          "UpdateConsumerLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "UpdateConsumerLambdaVersionlveAxZpy6FJ58qc5WyzcYNXISGaCCbcloFT7O2n2Jk"
+            }
+          },
+          "RemoveConsumerLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "RemoveConsumerLambdaVersionUEPT930VhOd1YTb8nQxPl8j7vyp8aRp3WGF6ZgDhwQ"
+            }
+          },
+          "GetConsumersLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "GetConsumersLambdaVersionmctCSKfZ53h5xZYfZa3acTE90fwMhurNCz9k4o8Pgg"
+            }
+          },
+          "DeleteSubscriptionLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "DeleteSubscriptionLambdaVersionl7g84KZ7f6zhGswOYGiDp8MHorLbrqWchrPIJH1Z0k"
             }
           },
           "IngressLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "IngressLambdaVersionlUG9mOAwDPatemL7XMzHMHcr1l6aLjM4IEJGe7vKk"
+              "Ref": "IngressLambdaVersionOPo7AsE2RJ3ssvvB3XZdijN6yVQ6Op9OoFIGq45rcQU"
+            }
+          },
+          "WebhookLambdaFunctionQualifiedArn": {
+            "Description": "Current Lambda function version",
+            "Value": {
+              "Ref": "WebhookLambdaVersion8WDfPjiGgBSAFK4Wv4nREZpFW5fRZeAyRymrPsxC3j4"
+            }
+          },
+          "ServiceEndpoint": {
+            "Description": "URL of the service endpoint",
+            "Value": {
+              "Fn::Join": [
+                "",
+                [
+                  "https://",
+                  {
+                    "Ref": "ApiGatewayRestApi"
+                  },
+                  ".execute-api.",
+                  {
+                    "Ref": "AWS::Region"
+                  },
+                  ".",
+                  {
+                    "Ref": "AWS::URLSuffix"
+                  },
+                  "/dev"
+                ]
+              ]
             }
           }
         }
@@ -558,85 +1770,224 @@
       "modularize": {
         "glob": "src/**/*.module.yml"
       },
-      "firehose": {
-        "name": "firehose-dev",
+      "prune": {
+        "automatic": true,
+        "number": 1
+      },
+      "webpack": {
+        "packager": "yarn",
+        "includeModules": {
+          "forceExclude": [
+            "aws-sdk"
+          ]
+        }
+      },
+      "registry": {
+        "name": "registry-dev-bucket",
         "arn": {
-          "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"FanoutIamRoleLambdaExecution\"][\"Properties\"][\"Policies\"][0][\"PolicyDocument\"][\"Statement\"][2][\"Resource\"]"
+          "Fn::GetAtt": [
+            "RegistryBucket",
+            "Arn"
+          ]
         },
-        "permissions": {
-          "read": {
-            "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"FanoutIamRoleLambdaExecution\"][\"Properties\"][\"Policies\"][0][\"PolicyDocument\"][\"Statement\"][2]"
-          },
-          "write": {
-            "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"IngressIamRoleLambdaExecution\"][\"Properties\"][\"Policies\"][0][\"PolicyDocument\"][\"Statement\"][1]"
-          }
+        "role": {
+          "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"CreateConsumerIamRoleLambdaExecution\"][\"Properties\"][\"Policies\"][0][\"PolicyDocument\"][\"Statement\"][1]"
         }
       }
     },
     "plugins": [
       "serverless-plugin-modularize",
-      "serverless-iam-roles-per-function"
+      "serverless-webpack",
+      "serverless-iam-roles-per-function",
+      "serverless-offline",
+      "serverless-prune-plugin"
     ],
     "pluginsData": {},
     "functions": {
-      "fanout": {
-        "handler": "src/fanout/index.handler",
-        "timeout": 900,
+      "createConsumer": {
+        "handler": "src/consumers/create.default",
+        "timeout": 30,
         "events": [
           {
-            "stream": {
-              "type": "kinesis",
-              "arn": {
-                "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"IamRoleLambdaExecution\"][\"Properties\"][\"Policies\"][0][\"PolicyDocument\"][\"Statement\"][2][\"Resource\"][0]"
-              },
-              "batchSize": 50,
-              "startingPosition": "LATEST",
-              "enabled": true
+            "http": {
+              "path": "consumer",
+              "method": "post",
+              "integration": "AWS_PROXY"
             }
           }
         ],
         "iamRoleStatements": [
           {
-            "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"FanoutIamRoleLambdaExecution\"][\"Properties\"][\"Policies\"][0][\"PolicyDocument\"][\"Statement\"][2]"
+            "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"CreateConsumerIamRoleLambdaExecution\"][\"Properties\"][\"Policies\"][0][\"PolicyDocument\"][\"Statement\"][1]"
           }
         ],
-        "name": "emission-dev-fanout",
-        "package": {},
+        "name": "emission-dev-createConsumer",
+        "package": {
+          "artifact": ".serverless/createConsumer.zip"
+        },
         "memory": 1536,
         "runtime": "nodejs12.x",
         "vpc": {},
-        "versionLogicalId": "FanoutLambdaVersionVEDYnnD8HS5aYn8Yy4RKqBMxdz6spcLPNmsnzLcCkrc"
+        "versionLogicalId": "CreateConsumerLambdaVersionCPUTXJ2bTFXxeo1esy45HkvEF5a3TjoFtA5WhkFXE"
+      },
+      "updateConsumer": {
+        "handler": "src/consumers/update.default",
+        "timeout": 30,
+        "events": [
+          {
+            "http": {
+              "path": "consumer",
+              "method": "put",
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "iamRoleStatements": [
+          {
+            "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"UpdateConsumerIamRoleLambdaExecution\"][\"Properties\"][\"Policies\"][0][\"PolicyDocument\"][\"Statement\"][1]"
+          }
+        ],
+        "name": "emission-dev-updateConsumer",
+        "package": {
+          "artifact": ".serverless/updateConsumer.zip"
+        },
+        "memory": 1536,
+        "runtime": "nodejs12.x",
+        "vpc": {},
+        "versionLogicalId": "UpdateConsumerLambdaVersionlveAxZpy6FJ58qc5WyzcYNXISGaCCbcloFT7O2n2Jk"
+      },
+      "removeConsumer": {
+        "handler": "src/consumers/remove.default",
+        "timeout": 30,
+        "events": [
+          {
+            "http": {
+              "path": "consumer",
+              "method": "delete",
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "iamRoleStatements": [
+          {
+            "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"RemoveConsumerIamRoleLambdaExecution\"][\"Properties\"][\"Policies\"][0][\"PolicyDocument\"][\"Statement\"][1]"
+          }
+        ],
+        "name": "emission-dev-removeConsumer",
+        "package": {
+          "artifact": ".serverless/removeConsumer.zip"
+        },
+        "memory": 1536,
+        "runtime": "nodejs12.x",
+        "vpc": {},
+        "versionLogicalId": "RemoveConsumerLambdaVersionUEPT930VhOd1YTb8nQxPl8j7vyp8aRp3WGF6ZgDhwQ"
+      },
+      "getConsumers": {
+        "handler": "src/consumers/list.default",
+        "timeout": 30,
+        "events": [
+          {
+            "http": {
+              "path": "consumer",
+              "method": "get",
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "iamRoleStatements": [
+          {
+            "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"GetConsumersIamRoleLambdaExecution\"][\"Properties\"][\"Policies\"][0][\"PolicyDocument\"][\"Statement\"][1]"
+          }
+        ],
+        "name": "emission-dev-getConsumers",
+        "package": {
+          "artifact": ".serverless/getConsumers.zip"
+        },
+        "memory": 1536,
+        "runtime": "nodejs12.x",
+        "vpc": {},
+        "versionLogicalId": "GetConsumersLambdaVersionmctCSKfZ53h5xZYfZa3acTE90fwMhurNCz9k4o8Pgg"
+      },
+      "deleteSubscription": {
+        "handler": "src/consumers/destroy.default",
+        "timeout": 30,
+        "events": [
+          {
+            "http": {
+              "path": "subscription",
+              "method": "delete",
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "iamRoleStatements": [
+          {
+            "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"DeleteSubscriptionIamRoleLambdaExecution\"][\"Properties\"][\"Policies\"][0][\"PolicyDocument\"][\"Statement\"][1]"
+          }
+        ],
+        "name": "emission-dev-deleteSubscription",
+        "package": {
+          "artifact": ".serverless/deleteSubscription.zip"
+        },
+        "memory": 1536,
+        "runtime": "nodejs12.x",
+        "vpc": {},
+        "versionLogicalId": "DeleteSubscriptionLambdaVersionl7g84KZ7f6zhGswOYGiDp8MHorLbrqWchrPIJH1Z0k"
       },
       "ingress": {
-        "handler": "src/ingress/index.handler",
+        "handler": "src/ingress/index.default",
         "timeout": 30,
-        "environment": {
-          "FIREHOSE_ARN": {
-            "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"IngressLambdaFunction\"][\"Properties\"][\"Environment\"][\"Variables\"][\"FIREHOSE_ARN\"]"
-          },
-          "FIREHOSE_NAME": "firehose-dev"
-        },
+        "events": [
+          {
+            "http": {
+              "path": "ingress",
+              "method": "put",
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
         "iamRoleStatements": [
           {
             "$ref": "$[\"service\"][\"provider\"][\"compiledCloudFormationTemplate\"][\"Resources\"][\"IngressIamRoleLambdaExecution\"][\"Properties\"][\"Policies\"][0][\"PolicyDocument\"][\"Statement\"][1]"
           }
         ],
-        "events": [],
         "name": "emission-dev-ingress",
-        "package": {},
+        "package": {
+          "artifact": ".serverless/ingress.zip"
+        },
         "memory": 1536,
         "runtime": "nodejs12.x",
         "vpc": {},
-        "versionLogicalId": "IngressLambdaVersionlUG9mOAwDPatemL7XMzHMHcr1l6aLjM4IEJGe7vKk"
+        "versionLogicalId": "IngressLambdaVersionOPo7AsE2RJ3ssvvB3XZdijN6yVQ6Op9OoFIGq45rcQU"
+      },
+      "webhook": {
+        "handler": "src/webhook/index.default",
+        "timeout": 30,
+        "events": [
+          {
+            "http": {
+              "path": "webhook",
+              "method": "get",
+              "integration": "AWS_PROXY"
+            }
+          }
+        ],
+        "name": "emission-dev-webhook",
+        "package": {
+          "artifact": ".serverless/webhook.zip"
+        },
+        "memory": 1536,
+        "runtime": "nodejs12.x",
+        "vpc": {},
+        "versionLogicalId": "WebhookLambdaVersion8WDfPjiGgBSAFK4Wv4nREZpFW5fRZeAyRymrPsxC3j4"
       }
     },
     "resources": {
       "Resources": {
-        "FirehoseStream": {
-          "Type": "AWS::Kinesis::Stream",
+        "RegistryBucket": {
+          "Type": "AWS::S3::Bucket",
           "Properties": {
-            "Name": "firehose-dev",
-            "ShardCount": 5
+            "BucketName": "registry-dev-bucket"
           }
         }
       },
@@ -644,11 +1995,11 @@
     },
     "serviceFilename": "serverless.yml",
     "layers": {},
-    "isDashboardMonitoringPreconfigured": false,
-    "artifact": "/home/sully/Desktop/emission/.serverless/emission.zip"
+    "isDashboardMonitoringPreconfigured": false
   },
   "package": {
-    "artifactDirectoryName": "serverless/emission/dev/1586172027426-2020-04-06T11:20:27.426Z",
-    "artifact": "emission.zip"
+    "individually": true,
+    "artifactDirectoryName": "serverless/emission/dev/1588564505901-2020-05-04T03:55:05.901Z",
+    "artifact": ""
   }
 }

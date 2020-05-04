@@ -1,0 +1,56 @@
+
+
+functions:
+  createConsumer:
+    handler: src/consumers/create.default
+    timeout: 30
+    events:
+      - http:
+          path: /consumer
+          method: post
+    iamRoleStatements:
+      - ${self:custom.registry.role}
+
+  
+  updateConsumer:
+    handler: src/consumers/update.default
+    timeout: 30
+    events:
+      - http:
+          path: /consumer
+          method: put
+    iamRoleStatements:
+      - ${self:custom.registry.role}
+
+  removeConsumer:
+    handler: src/consumers/remove.default
+    timeout: 30
+    events:
+      - http:
+          path: /consumer
+          method: delete
+    iamRoleStatements:
+      - ${self:custom.registry.role}
+
+  getConsumers: 
+    handler: src/consumers/list.default
+    timeout: 30
+    events:
+      - http:
+          path: /consumer
+          method: get
+    iamRoleStatements:
+      - ${self:custom.registry.role}
+
+  
+  deleteSubscription:
+    handler: src/consumers/destroy.default
+    timeout: 30
+    events:
+      - http:
+          path: /subscription
+          method: delete
+    iamRoleStatements:
+      - ${self:custom.registry.role}
+
+  

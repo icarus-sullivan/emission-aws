@@ -1,0 +1,10 @@
+
+
+functions:
+  webhook:
+    handler: src/webhook/index.default
+    timeout: 30
+    events:
+      - http:
+          path: webhook
+          method: get
