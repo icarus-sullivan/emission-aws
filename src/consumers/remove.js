@@ -1,26 +1,12 @@
-const { wrapper } = require('@teleology/lambda-api');
-const { pipeline } = require('../registry');
+import { wrapper, ApiError } from '@teleology/lambda-api';
+import events from '../registry';
 
-const handler = async ({ headers, data }) => {
-  console.log(
-    JSON.stringify(
-      {
-        headers,
-        data,
-      },
-      null,
-      2,
-    ),
-  );
+const handler = async ({ data }) => {
+  if (!data.id) {
+    throw new ApiError('An id is required to update this resource');
+  }
 
-  const { eventKey, ...removal } = data;
-
-  const { removals } = await pipeline({
-    eventKey,
-    $remove: [removal],
-  });
-
-  return removals[0];
+  return events.delete(data);
 };
 
 export default wrapper(handler);

@@ -1,21 +1,20 @@
-const { wrapper } = require('@teleology/lambda-api');
-const { getRegistry } = require('../registry');
+import { wrapper, ApiError } from '@teleology/lambda-api';
+import events from '../registry';
 
-const handler = async ({ headers, data }) => {
-  console.log(
-    JSON.stringify(
-      {
-        headers,
-        data,
-      },
-      null,
-      2,
-    ),
-  );
+const handler = async ({ data }) => {
+  if (!data.hash) {
+    throw new ApiError('Hash field required');
+  }
 
-  const { eventKey } = data;
-
-  return getRegistry({ eventKey });
+  try {
+    return events.query({
+      hid: data.hash,
+    });
+  } catch (e) {
+    throw new ApiError(e.message, {
+      data,
+    });
+  }
 };
 
 export default wrapper(handler);

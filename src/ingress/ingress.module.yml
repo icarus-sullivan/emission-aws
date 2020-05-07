@@ -7,5 +7,6 @@ functions:
       - http:
           path: ingress
           method: put
+          cors: true
     iamRoleStatements:
-      - ${self:custom.registry.role}
+      - ${self:custom.ddb.role}

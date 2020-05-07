@@ -1,6 +1,39 @@
 
 
 functions:
+  getConsumer:
+    handler: src/consumers/get.default
+    timeout: 30
+    events:
+      - http:
+          path: /consumer/{id}
+          method: get
+          cors: ${self:custom.cors}
+    iamRoleStatements:
+      - ${self:custom.ddb.role}
+
+  updateConsumer:
+    handler: src/consumers/update.default
+    timeout: 30
+    events:
+      - http:
+          path: /consumer/{id}
+          method: put
+          cors: ${self:custom.cors}
+    iamRoleStatements:
+      - ${self:custom.ddb.role}
+
+  removeConsumer:
+    handler: src/consumers/remove.default
+    timeout: 30
+    events:
+      - http:
+          path: /consumer/{id}
+          method: delete
+          cors: ${self:custom.cors}
+    iamRoleStatements:
+      - ${self:custom.ddb.role}
+
   createConsumer:
     handler: src/consumers/create.default
     timeout: 30
@@ -8,49 +41,20 @@ functions:
       - http:
           path: /consumer
           method: post
+          cors: ${self:custom.cors}
     iamRoleStatements:
-      - ${self:custom.registry.role}
-
-  
-  updateConsumer:
-    handler: src/consumers/update.default
-    timeout: 30
-    events:
-      - http:
-          path: /consumer
-          method: put
-    iamRoleStatements:
-      - ${self:custom.registry.role}
-
-  removeConsumer:
-    handler: src/consumers/remove.default
-    timeout: 30
-    events:
-      - http:
-          path: /consumer
-          method: delete
-    iamRoleStatements:
-      - ${self:custom.registry.role}
+      - ${self:custom.ddb.role}
 
   getConsumers: 
     handler: src/consumers/list.default
     timeout: 30
     events:
       - http:
-          path: /consumer
+          path: /consumers/{hash}
           method: get
+          cors: ${self:custom.cors}
     iamRoleStatements:
-      - ${self:custom.registry.role}
+      - ${self:custom.ddb.role}
 
-  
-  deleteSubscription:
-    handler: src/consumers/destroy.default
-    timeout: 30
-    events:
-      - http:
-          path: /subscription
-          method: delete
-    iamRoleStatements:
-      - ${self:custom.registry.role}
 
   

@@ -1,26 +1,18 @@
-const { wrapper } = require('@teleology/lambda-api');
-const { pipeline } = require('../registry');
+// const { pipeline } = require('../registry');
+import { v4 as uuid } from 'uuid';
+import { wrapper } from '@teleology/lambda-api';
+import hash from '../utils/hash';
+import events from '../registry';
 
-const handler = async ({ headers, data }) => {
-  console.log(
-    JSON.stringify(
-      {
-        headers,
-        data,
-      },
-      null,
-      2,
-    ),
-  );
+const handler = async ({ data }) => {
+  const { eventKey, ...item } = data;
 
-  const { eventKey, ...addition } = data;
-
-  const { additions } = await pipeline({
+  return events.create({
+    id: uuid(),
+    hid: hash(eventKey),
     eventKey,
-    $add: [addition],
+    ...item,
   });
-
-  return additions[0];
 };
 
 export default wrapper(handler);

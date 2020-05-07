@@ -56,10 +56,10 @@
         }
       }
     },
-    "CreateConsumerLogGroup": {
+    "GetConsumerLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/emission-dev-createConsumer",
+        "LogGroupName": "/aws/lambda/emission-dev-getConsumer",
         "RetentionInDays": 1
       }
     },
@@ -77,17 +77,17 @@
         "RetentionInDays": 1
       }
     },
+    "CreateConsumerLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": "/aws/lambda/emission-dev-createConsumer",
+        "RetentionInDays": 1
+      }
+    },
     "GetConsumersLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
         "LogGroupName": "/aws/lambda/emission-dev-getConsumers",
-        "RetentionInDays": 1
-      }
-    },
-    "DeleteSubscriptionLogGroup": {
-      "Type": "AWS::Logs::LogGroup",
-      "Properties": {
-        "LogGroupName": "/aws/lambda/emission-dev-deleteSubscription",
         "RetentionInDays": 1
       }
     },
@@ -180,21 +180,21 @@
         }
       }
     },
-    "CreateConsumerLambdaFunction": {
+    "GetConsumerLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/emission/dev/1588564505901-2020-05-04T03:55:05.901Z/createConsumer.zip"
+          "S3Key": "serverless/emission/dev/1588834704099-2020-05-07T06:58:24.099Z/getConsumer.zip"
         },
-        "FunctionName": "emission-dev-createConsumer",
-        "Handler": "src/consumers/create.default",
+        "FunctionName": "emission-dev-getConsumer",
+        "Handler": "src/consumers/get.default",
         "MemorySize": 1536,
         "Role": {
           "Fn::GetAtt": [
-            "CreateConsumerIamRoleLambdaExecution",
+            "GetConsumerIamRoleLambdaExecution",
             "Arn"
           ]
         },
@@ -202,23 +202,23 @@
         "Timeout": 30,
         "Environment": {
           "Variables": {
-            "REGISTRY_BUCKET": "registry-dev-bucket"
+            "EVENT_TABLE": "event-dev-table"
           }
         }
       },
       "DependsOn": [
-        "CreateConsumerIamRoleLambdaExecution",
-        "CreateConsumerLogGroup"
+        "GetConsumerIamRoleLambdaExecution",
+        "GetConsumerLogGroup"
       ]
     },
-    "CreateConsumerLambdaVersionCPUTXJ2bTFXxeo1esy45HkvEF5a3TjoFtA5WhkFXE": {
+    "GetConsumerLambdaVersiondCl6F0G1fcjZscCa342KxtwJpkNZ9xLbdKrwjLLHW8": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
-          "Ref": "CreateConsumerLambdaFunction"
+          "Ref": "GetConsumerLambdaFunction"
         },
-        "CodeSha256": "Owl5l6U2JcXh+grL6kFRODfywfc22jxC0HfSLcwqJmQ="
+        "CodeSha256": "Qo5zTrhv8L22hHKmSqVUijzMaVB1PfbPdQOACi/Tr4I="
       }
     },
     "UpdateConsumerLambdaFunction": {
@@ -228,7 +228,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/emission/dev/1588564505901-2020-05-04T03:55:05.901Z/updateConsumer.zip"
+          "S3Key": "serverless/emission/dev/1588834704099-2020-05-07T06:58:24.099Z/updateConsumer.zip"
         },
         "FunctionName": "emission-dev-updateConsumer",
         "Handler": "src/consumers/update.default",
@@ -243,7 +243,7 @@
         "Timeout": 30,
         "Environment": {
           "Variables": {
-            "REGISTRY_BUCKET": "registry-dev-bucket"
+            "EVENT_TABLE": "event-dev-table"
           }
         }
       },
@@ -252,14 +252,14 @@
         "UpdateConsumerLogGroup"
       ]
     },
-    "UpdateConsumerLambdaVersionlveAxZpy6FJ58qc5WyzcYNXISGaCCbcloFT7O2n2Jk": {
+    "UpdateConsumerLambdaVersionzsBvmYCR3cj3WtBfXtfgurFzvIyrjgQL9zyCfbw4lI": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "UpdateConsumerLambdaFunction"
         },
-        "CodeSha256": "hL4rrMGda7fU15wrkms97CDJ43xDQPlvcLCm2fphHkw="
+        "CodeSha256": "uAd2tmtLiNk4RFDX3yH0zAlELOmJS7aSOIJaMZscEJQ="
       }
     },
     "RemoveConsumerLambdaFunction": {
@@ -269,7 +269,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/emission/dev/1588564505901-2020-05-04T03:55:05.901Z/removeConsumer.zip"
+          "S3Key": "serverless/emission/dev/1588834704099-2020-05-07T06:58:24.099Z/removeConsumer.zip"
         },
         "FunctionName": "emission-dev-removeConsumer",
         "Handler": "src/consumers/remove.default",
@@ -284,7 +284,7 @@
         "Timeout": 30,
         "Environment": {
           "Variables": {
-            "REGISTRY_BUCKET": "registry-dev-bucket"
+            "EVENT_TABLE": "event-dev-table"
           }
         }
       },
@@ -293,14 +293,55 @@
         "RemoveConsumerLogGroup"
       ]
     },
-    "RemoveConsumerLambdaVersionUEPT930VhOd1YTb8nQxPl8j7vyp8aRp3WGF6ZgDhwQ": {
+    "RemoveConsumerLambdaVersionqINRudSuR3V7V580jGzf7XrFnN22LbDcb7L0US6aQ": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "RemoveConsumerLambdaFunction"
         },
-        "CodeSha256": "XmYBpg23lSgd4MMkTULFyqX09eFhfgMYYd0urm7AA4w="
+        "CodeSha256": "tmY3pofUNxbpT+weBUj7bGVQnCmBoTHiTma9cKlhHJ4="
+      }
+    },
+    "CreateConsumerLambdaFunction": {
+      "Type": "AWS::Lambda::Function",
+      "Properties": {
+        "Code": {
+          "S3Bucket": {
+            "Ref": "ServerlessDeploymentBucket"
+          },
+          "S3Key": "serverless/emission/dev/1588834704099-2020-05-07T06:58:24.099Z/createConsumer.zip"
+        },
+        "FunctionName": "emission-dev-createConsumer",
+        "Handler": "src/consumers/create.default",
+        "MemorySize": 1536,
+        "Role": {
+          "Fn::GetAtt": [
+            "CreateConsumerIamRoleLambdaExecution",
+            "Arn"
+          ]
+        },
+        "Runtime": "nodejs12.x",
+        "Timeout": 30,
+        "Environment": {
+          "Variables": {
+            "EVENT_TABLE": "event-dev-table"
+          }
+        }
+      },
+      "DependsOn": [
+        "CreateConsumerIamRoleLambdaExecution",
+        "CreateConsumerLogGroup"
+      ]
+    },
+    "CreateConsumerLambdaVersionXQkPgkWUhKY2gZMRIaIfuAGEDLUKFrGpoozZp0s36Q": {
+      "Type": "AWS::Lambda::Version",
+      "DeletionPolicy": "Retain",
+      "Properties": {
+        "FunctionName": {
+          "Ref": "CreateConsumerLambdaFunction"
+        },
+        "CodeSha256": "9k00UGfwE3wcL/1yZlLcs+rORJShwa4ZWmbeVFCrETQ="
       }
     },
     "GetConsumersLambdaFunction": {
@@ -310,7 +351,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/emission/dev/1588564505901-2020-05-04T03:55:05.901Z/getConsumers.zip"
+          "S3Key": "serverless/emission/dev/1588834704099-2020-05-07T06:58:24.099Z/getConsumers.zip"
         },
         "FunctionName": "emission-dev-getConsumers",
         "Handler": "src/consumers/list.default",
@@ -325,7 +366,7 @@
         "Timeout": 30,
         "Environment": {
           "Variables": {
-            "REGISTRY_BUCKET": "registry-dev-bucket"
+            "EVENT_TABLE": "event-dev-table"
           }
         }
       },
@@ -334,55 +375,14 @@
         "GetConsumersLogGroup"
       ]
     },
-    "GetConsumersLambdaVersionmctCSKfZ53h5xZYfZa3acTE90fwMhurNCz9k4o8Pgg": {
+    "GetConsumersLambdaVersionpHlkco5ajuv3RuOEAChBmBSJNYQJoZhHTF4hwxsGA": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetConsumersLambdaFunction"
         },
-        "CodeSha256": "YLIrNaubNKasg87S01Z8QxI/E/VFqPJ6bNGo6t7zobA="
-      }
-    },
-    "DeleteSubscriptionLambdaFunction": {
-      "Type": "AWS::Lambda::Function",
-      "Properties": {
-        "Code": {
-          "S3Bucket": {
-            "Ref": "ServerlessDeploymentBucket"
-          },
-          "S3Key": "serverless/emission/dev/1588564505901-2020-05-04T03:55:05.901Z/deleteSubscription.zip"
-        },
-        "FunctionName": "emission-dev-deleteSubscription",
-        "Handler": "src/consumers/destroy.default",
-        "MemorySize": 1536,
-        "Role": {
-          "Fn::GetAtt": [
-            "DeleteSubscriptionIamRoleLambdaExecution",
-            "Arn"
-          ]
-        },
-        "Runtime": "nodejs12.x",
-        "Timeout": 30,
-        "Environment": {
-          "Variables": {
-            "REGISTRY_BUCKET": "registry-dev-bucket"
-          }
-        }
-      },
-      "DependsOn": [
-        "DeleteSubscriptionIamRoleLambdaExecution",
-        "DeleteSubscriptionLogGroup"
-      ]
-    },
-    "DeleteSubscriptionLambdaVersionl7g84KZ7f6zhGswOYGiDp8MHorLbrqWchrPIJH1Z0k": {
-      "Type": "AWS::Lambda::Version",
-      "DeletionPolicy": "Retain",
-      "Properties": {
-        "FunctionName": {
-          "Ref": "DeleteSubscriptionLambdaFunction"
-        },
-        "CodeSha256": "kUi61zigzyzhp42WmgcxoVJ/lhpHPyE7W9tDrF54FoM="
+        "CodeSha256": "y/JWAXp0tlC5Crvw1RqPqmkerVbFvaxp/5JCcYY7Mao="
       }
     },
     "IngressLambdaFunction": {
@@ -392,7 +392,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/emission/dev/1588564505901-2020-05-04T03:55:05.901Z/ingress.zip"
+          "S3Key": "serverless/emission/dev/1588834704099-2020-05-07T06:58:24.099Z/ingress.zip"
         },
         "FunctionName": "emission-dev-ingress",
         "Handler": "src/ingress/index.default",
@@ -407,7 +407,7 @@
         "Timeout": 30,
         "Environment": {
           "Variables": {
-            "REGISTRY_BUCKET": "registry-dev-bucket"
+            "EVENT_TABLE": "event-dev-table"
           }
         }
       },
@@ -416,14 +416,14 @@
         "IngressLogGroup"
       ]
     },
-    "IngressLambdaVersionOPo7AsE2RJ3ssvvB3XZdijN6yVQ6Op9OoFIGq45rcQU": {
+    "IngressLambdaVersionorYoqrMQbTyQfswTWgmTLV41YLbP8aX0I7bQk9zYY4": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "IngressLambdaFunction"
         },
-        "CodeSha256": "aD4MCrQY2s7qqKZ4g6dzA0MQ/E2wNT2QKGcdHPiaNoM="
+        "CodeSha256": "C6M95+Rtlw54EVErNc6SyxT5H29I87O1aNxEgvPqZlw="
       }
     },
     "WebhookLambdaFunction": {
@@ -433,7 +433,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/emission/dev/1588564505901-2020-05-04T03:55:05.901Z/webhook.zip"
+          "S3Key": "serverless/emission/dev/1588834704099-2020-05-07T06:58:24.099Z/webhook.zip"
         },
         "FunctionName": "emission-dev-webhook",
         "Handler": "src/webhook/index.default",
@@ -448,7 +448,7 @@
         "Timeout": 30,
         "Environment": {
           "Variables": {
-            "REGISTRY_BUCKET": "registry-dev-bucket"
+            "EVENT_TABLE": "event-dev-table"
           }
         }
       },
@@ -457,7 +457,7 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "WebhookLambdaVersion8WDfPjiGgBSAFK4Wv4nREZpFW5fRZeAyRymrPsxC3j4": {
+    "WebhookLambdaVersionibOohwr0rZLxmImnN19HLrsEUsOs9IAb6qJqDGg": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
@@ -494,7 +494,19 @@
         }
       }
     },
-    "ApiGatewayResourceSubscription": {
+    "ApiGatewayResourceConsumerIdVar": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceConsumer"
+        },
+        "PathPart": "{id}",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceConsumers": {
       "Type": "AWS::ApiGateway::Resource",
       "Properties": {
         "ParentId": {
@@ -503,7 +515,19 @@
             "RootResourceId"
           ]
         },
-        "PathPart": "subscription",
+        "PathPart": "consumers",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceConsumersHashVar": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceConsumers"
+        },
+        "PathPart": "{hash}",
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
@@ -537,6 +561,315 @@
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
+      }
+    },
+    "ApiGatewayMethodConsumerIdVarOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "ContentHandling": "CONVERT_TO_TEXT",
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,DELETE,PUT,GET'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceConsumerIdVar"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodConsumerOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "ContentHandling": "CONVERT_TO_TEXT",
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,POST'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceConsumer"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodConsumersHashVarOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "ContentHandling": "CONVERT_TO_TEXT",
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,GET'"
+              },
+              "ResponseTemplates": {
+                "application/json": ""
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceConsumersHashVar"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodIngressOptions": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "OPTIONS",
+        "MethodResponses": [
+          {
+            "StatusCode": "200",
+            "ResponseParameters": {
+              "method.response.header.Access-Control-Allow-Origin": true,
+              "method.response.header.Access-Control-Allow-Headers": true,
+              "method.response.header.Access-Control-Allow-Methods": true
+            },
+            "ResponseModels": {}
+          }
+        ],
+        "RequestParameters": {},
+        "Integration": {
+          "Type": "MOCK",
+          "RequestTemplates": {
+            "application/json": "{statusCode:200}"
+          },
+          "ContentHandling": "CONVERT_TO_TEXT",
+          "IntegrationResponses": [
+            {
+              "StatusCode": "200",
+              "ResponseParameters": {
+                "method.response.header.Access-Control-Allow-Origin": "'*'",
+                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
+                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,PUT'"
+              },
+              "ResponseTemplates": {
+                "application/json": "#set($origin = $input.params(\"Origin\"))\n#if($origin == \"\") #set($origin = $input.params(\"origin\")) #end\n#if($origin.matches(\".+\")) #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin) #end"
+              }
+            }
+          ]
+        },
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceIngress"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayMethodConsumerIdVarGet": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "GET",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceConsumerIdVar"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "GetConsumerLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      }
+    },
+    "ApiGatewayMethodConsumerIdVarPut": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "PUT",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceConsumerIdVar"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "UpdateConsumerLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      }
+    },
+    "ApiGatewayMethodConsumerIdVarDelete": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "DELETE",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceConsumerIdVar"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "RemoveConsumerLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
       }
     },
     "ApiGatewayMethodConsumerPost": {
@@ -582,99 +915,13 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayMethodConsumerPut": {
-      "Type": "AWS::ApiGateway::Method",
-      "Properties": {
-        "HttpMethod": "PUT",
-        "RequestParameters": {},
-        "ResourceId": {
-          "Ref": "ApiGatewayResourceConsumer"
-        },
-        "RestApiId": {
-          "Ref": "ApiGatewayRestApi"
-        },
-        "ApiKeyRequired": false,
-        "AuthorizationType": "NONE",
-        "Integration": {
-          "IntegrationHttpMethod": "POST",
-          "Type": "AWS_PROXY",
-          "Uri": {
-            "Fn::Join": [
-              "",
-              [
-                "arn:",
-                {
-                  "Ref": "AWS::Partition"
-                },
-                ":apigateway:",
-                {
-                  "Ref": "AWS::Region"
-                },
-                ":lambda:path/2015-03-31/functions/",
-                {
-                  "Fn::GetAtt": [
-                    "UpdateConsumerLambdaFunction",
-                    "Arn"
-                  ]
-                },
-                "/invocations"
-              ]
-            ]
-          }
-        },
-        "MethodResponses": []
-      }
-    },
-    "ApiGatewayMethodConsumerDelete": {
-      "Type": "AWS::ApiGateway::Method",
-      "Properties": {
-        "HttpMethod": "DELETE",
-        "RequestParameters": {},
-        "ResourceId": {
-          "Ref": "ApiGatewayResourceConsumer"
-        },
-        "RestApiId": {
-          "Ref": "ApiGatewayRestApi"
-        },
-        "ApiKeyRequired": false,
-        "AuthorizationType": "NONE",
-        "Integration": {
-          "IntegrationHttpMethod": "POST",
-          "Type": "AWS_PROXY",
-          "Uri": {
-            "Fn::Join": [
-              "",
-              [
-                "arn:",
-                {
-                  "Ref": "AWS::Partition"
-                },
-                ":apigateway:",
-                {
-                  "Ref": "AWS::Region"
-                },
-                ":lambda:path/2015-03-31/functions/",
-                {
-                  "Fn::GetAtt": [
-                    "RemoveConsumerLambdaFunction",
-                    "Arn"
-                  ]
-                },
-                "/invocations"
-              ]
-            ]
-          }
-        },
-        "MethodResponses": []
-      }
-    },
-    "ApiGatewayMethodConsumerGet": {
+    "ApiGatewayMethodConsumersHashVarGet": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "GET",
         "RequestParameters": {},
         "ResourceId": {
-          "Ref": "ApiGatewayResourceConsumer"
+          "Ref": "ApiGatewayResourceConsumersHashVar"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
@@ -700,49 +947,6 @@
                 {
                   "Fn::GetAtt": [
                     "GetConsumersLambdaFunction",
-                    "Arn"
-                  ]
-                },
-                "/invocations"
-              ]
-            ]
-          }
-        },
-        "MethodResponses": []
-      }
-    },
-    "ApiGatewayMethodSubscriptionDelete": {
-      "Type": "AWS::ApiGateway::Method",
-      "Properties": {
-        "HttpMethod": "DELETE",
-        "RequestParameters": {},
-        "ResourceId": {
-          "Ref": "ApiGatewayResourceSubscription"
-        },
-        "RestApiId": {
-          "Ref": "ApiGatewayRestApi"
-        },
-        "ApiKeyRequired": false,
-        "AuthorizationType": "NONE",
-        "Integration": {
-          "IntegrationHttpMethod": "POST",
-          "Type": "AWS_PROXY",
-          "Uri": {
-            "Fn::Join": [
-              "",
-              [
-                "arn:",
-                {
-                  "Ref": "AWS::Partition"
-                },
-                ":apigateway:",
-                {
-                  "Ref": "AWS::Region"
-                },
-                ":lambda:path/2015-03-31/functions/",
-                {
-                  "Fn::GetAtt": [
-                    "DeleteSubscriptionLambdaFunction",
                     "Arn"
                   ]
                 },
@@ -840,7 +1044,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1588564483706": {
+    "ApiGatewayDeployment1588834676115": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -849,21 +1053,25 @@
         "StageName": "dev"
       },
       "DependsOn": [
+        "ApiGatewayMethodConsumerIdVarOptions",
+        "ApiGatewayMethodConsumerOptions",
+        "ApiGatewayMethodConsumersHashVarOptions",
+        "ApiGatewayMethodIngressOptions",
+        "ApiGatewayMethodConsumerIdVarGet",
+        "ApiGatewayMethodConsumerIdVarPut",
+        "ApiGatewayMethodConsumerIdVarDelete",
         "ApiGatewayMethodConsumerPost",
-        "ApiGatewayMethodConsumerPut",
-        "ApiGatewayMethodConsumerDelete",
-        "ApiGatewayMethodConsumerGet",
-        "ApiGatewayMethodSubscriptionDelete",
+        "ApiGatewayMethodConsumersHashVarGet",
         "ApiGatewayMethodIngressPut",
         "ApiGatewayMethodWebhookGet"
       ]
     },
-    "CreateConsumerLambdaPermissionApiGateway": {
+    "GetConsumerLambdaPermissionApiGateway": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
           "Fn::GetAtt": [
-            "CreateConsumerLambdaFunction",
+            "GetConsumerLambdaFunction",
             "Arn"
           ]
         },
@@ -969,12 +1177,12 @@
         }
       }
     },
-    "GetConsumersLambdaPermissionApiGateway": {
+    "CreateConsumerLambdaPermissionApiGateway": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
           "Fn::GetAtt": [
-            "GetConsumersLambdaFunction",
+            "CreateConsumerLambdaFunction",
             "Arn"
           ]
         },
@@ -1006,12 +1214,12 @@
         }
       }
     },
-    "DeleteSubscriptionLambdaPermissionApiGateway": {
+    "GetConsumersLambdaPermissionApiGateway": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
           "Fn::GetAtt": [
-            "DeleteSubscriptionLambdaFunction",
+            "GetConsumersLambdaFunction",
             "Arn"
           ]
         },
@@ -1117,7 +1325,7 @@
         }
       }
     },
-    "CreateConsumerIamRoleLambdaExecution": {
+    "GetConsumerIamRoleLambdaExecution": {
       "Type": "AWS::IAM::Role",
       "Properties": {
         "AssumeRolePolicyDocument": {
@@ -1158,22 +1366,18 @@
                   ],
                   "Resource": [
                     {
-                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/emission-dev-createConsumer:*:*"
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/emission-dev-getConsumer:*:*"
                     }
                   ]
                 },
                 {
                   "Effect": "Allow",
                   "Action": [
-                    "s3:PutObject",
-                    "s3:PutObjectAcl",
-                    "s3:GetObject",
-                    "s3:GetObjectAcl",
-                    "s3:DeleteObject"
+                    "dynamodb:*"
                   ],
                   "Resource": [
-                    "arn:aws:s3:::registry-dev-bucket",
-                    "arn:aws:s3:::registry-dev-bucket/*"
+                    "arn:aws:dynamodb:us-east-1:*:table/event-dev-table",
+                    "arn:aws:dynamodb:us-east-1:*:table/event-dev-table/*"
                   ]
                 }
               ]
@@ -1189,7 +1393,7 @@
               {
                 "Ref": "AWS::Region"
               },
-              "createConsumer",
+              "getConsumer",
               "lambdaRole"
             ]
           ]
@@ -1245,15 +1449,11 @@
                 {
                   "Effect": "Allow",
                   "Action": [
-                    "s3:PutObject",
-                    "s3:PutObjectAcl",
-                    "s3:GetObject",
-                    "s3:GetObjectAcl",
-                    "s3:DeleteObject"
+                    "dynamodb:*"
                   ],
                   "Resource": [
-                    "arn:aws:s3:::registry-dev-bucket",
-                    "arn:aws:s3:::registry-dev-bucket/*"
+                    "arn:aws:dynamodb:us-east-1:*:table/event-dev-table",
+                    "arn:aws:dynamodb:us-east-1:*:table/event-dev-table/*"
                   ]
                 }
               ]
@@ -1325,15 +1525,11 @@
                 {
                   "Effect": "Allow",
                   "Action": [
-                    "s3:PutObject",
-                    "s3:PutObjectAcl",
-                    "s3:GetObject",
-                    "s3:GetObjectAcl",
-                    "s3:DeleteObject"
+                    "dynamodb:*"
                   ],
                   "Resource": [
-                    "arn:aws:s3:::registry-dev-bucket",
-                    "arn:aws:s3:::registry-dev-bucket/*"
+                    "arn:aws:dynamodb:us-east-1:*:table/event-dev-table",
+                    "arn:aws:dynamodb:us-east-1:*:table/event-dev-table/*"
                   ]
                 }
               ]
@@ -1350,6 +1546,82 @@
                 "Ref": "AWS::Region"
               },
               "removeConsumer",
+              "lambdaRole"
+            ]
+          ]
+        },
+        "ManagedPolicyArns": []
+      }
+    },
+    "CreateConsumerIamRoleLambdaExecution": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument": {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [
+                  "lambda.amazonaws.com"
+                ]
+              },
+              "Action": [
+                "sts:AssumeRole"
+              ]
+            }
+          ]
+        },
+        "Policies": [
+          {
+            "PolicyName": {
+              "Fn::Join": [
+                "-",
+                [
+                  "emission-dev",
+                  "lambda"
+                ]
+              ]
+            },
+            "PolicyDocument": {
+              "Version": "2012-10-17",
+              "Statement": [
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "logs:CreateLogStream",
+                    "logs:PutLogEvents"
+                  ],
+                  "Resource": [
+                    {
+                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/emission-dev-createConsumer:*:*"
+                    }
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "dynamodb:*"
+                  ],
+                  "Resource": [
+                    "arn:aws:dynamodb:us-east-1:*:table/event-dev-table",
+                    "arn:aws:dynamodb:us-east-1:*:table/event-dev-table/*"
+                  ]
+                }
+              ]
+            }
+          }
+        ],
+        "Path": "/",
+        "RoleName": {
+          "Fn::Join": [
+            "-",
+            [
+              "emission-dev",
+              {
+                "Ref": "AWS::Region"
+              },
+              "createConsumer",
               "lambdaRole"
             ]
           ]
@@ -1405,15 +1677,11 @@
                 {
                   "Effect": "Allow",
                   "Action": [
-                    "s3:PutObject",
-                    "s3:PutObjectAcl",
-                    "s3:GetObject",
-                    "s3:GetObjectAcl",
-                    "s3:DeleteObject"
+                    "dynamodb:*"
                   ],
                   "Resource": [
-                    "arn:aws:s3:::registry-dev-bucket",
-                    "arn:aws:s3:::registry-dev-bucket/*"
+                    "arn:aws:dynamodb:us-east-1:*:table/event-dev-table",
+                    "arn:aws:dynamodb:us-east-1:*:table/event-dev-table/*"
                   ]
                 }
               ]
@@ -1430,86 +1698,6 @@
                 "Ref": "AWS::Region"
               },
               "getConsumers",
-              "lambdaRole"
-            ]
-          ]
-        },
-        "ManagedPolicyArns": []
-      }
-    },
-    "DeleteSubscriptionIamRoleLambdaExecution": {
-      "Type": "AWS::IAM::Role",
-      "Properties": {
-        "AssumeRolePolicyDocument": {
-          "Version": "2012-10-17",
-          "Statement": [
-            {
-              "Effect": "Allow",
-              "Principal": {
-                "Service": [
-                  "lambda.amazonaws.com"
-                ]
-              },
-              "Action": [
-                "sts:AssumeRole"
-              ]
-            }
-          ]
-        },
-        "Policies": [
-          {
-            "PolicyName": {
-              "Fn::Join": [
-                "-",
-                [
-                  "emission-dev",
-                  "lambda"
-                ]
-              ]
-            },
-            "PolicyDocument": {
-              "Version": "2012-10-17",
-              "Statement": [
-                {
-                  "Effect": "Allow",
-                  "Action": [
-                    "logs:CreateLogStream",
-                    "logs:PutLogEvents"
-                  ],
-                  "Resource": [
-                    {
-                      "Fn::Sub": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/emission-dev-deleteSubscription:*:*"
-                    }
-                  ]
-                },
-                {
-                  "Effect": "Allow",
-                  "Action": [
-                    "s3:PutObject",
-                    "s3:PutObjectAcl",
-                    "s3:GetObject",
-                    "s3:GetObjectAcl",
-                    "s3:DeleteObject"
-                  ],
-                  "Resource": [
-                    "arn:aws:s3:::registry-dev-bucket",
-                    "arn:aws:s3:::registry-dev-bucket/*"
-                  ]
-                }
-              ]
-            }
-          }
-        ],
-        "Path": "/",
-        "RoleName": {
-          "Fn::Join": [
-            "-",
-            [
-              "emission-dev",
-              {
-                "Ref": "AWS::Region"
-              },
-              "deleteSubscription",
               "lambdaRole"
             ]
           ]
@@ -1565,15 +1753,11 @@
                 {
                   "Effect": "Allow",
                   "Action": [
-                    "s3:PutObject",
-                    "s3:PutObjectAcl",
-                    "s3:GetObject",
-                    "s3:GetObjectAcl",
-                    "s3:DeleteObject"
+                    "dynamodb:*"
                   ],
                   "Resource": [
-                    "arn:aws:s3:::registry-dev-bucket",
-                    "arn:aws:s3:::registry-dev-bucket/*"
+                    "arn:aws:dynamodb:us-east-1:*:table/event-dev-table",
+                    "arn:aws:dynamodb:us-east-1:*:table/event-dev-table/*"
                   ]
                 }
               ]
@@ -1597,10 +1781,41 @@
         "ManagedPolicyArns": []
       }
     },
-    "RegistryBucket": {
-      "Type": "AWS::S3::Bucket",
+    "EventTabel": {
+      "Type": "AWS::DynamoDB::Table",
       "Properties": {
-        "BucketName": "registry-dev-bucket"
+        "TableName": "event-dev-table",
+        "AttributeDefinitions": [
+          {
+            "AttributeName": "id",
+            "AttributeType": "S"
+          },
+          {
+            "AttributeName": "hid",
+            "AttributeType": "S"
+          }
+        ],
+        "KeySchema": [
+          {
+            "AttributeName": "id",
+            "KeyType": "HASH"
+          }
+        ],
+        "BillingMode": "PAY_PER_REQUEST",
+        "GlobalSecondaryIndexes": [
+          {
+            "IndexName": "HashGSI",
+            "KeySchema": [
+              {
+                "AttributeName": "hid",
+                "KeyType": "HASH"
+              }
+            ],
+            "Projection": {
+              "ProjectionType": "ALL"
+            }
+          }
+        ]
       }
     }
   },
@@ -1610,46 +1825,46 @@
         "Ref": "ServerlessDeploymentBucket"
       }
     },
-    "CreateConsumerLambdaFunctionQualifiedArn": {
+    "GetConsumerLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "CreateConsumerLambdaVersionCPUTXJ2bTFXxeo1esy45HkvEF5a3TjoFtA5WhkFXE"
+        "Ref": "GetConsumerLambdaVersiondCl6F0G1fcjZscCa342KxtwJpkNZ9xLbdKrwjLLHW8"
       }
     },
     "UpdateConsumerLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "UpdateConsumerLambdaVersionlveAxZpy6FJ58qc5WyzcYNXISGaCCbcloFT7O2n2Jk"
+        "Ref": "UpdateConsumerLambdaVersionzsBvmYCR3cj3WtBfXtfgurFzvIyrjgQL9zyCfbw4lI"
       }
     },
     "RemoveConsumerLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "RemoveConsumerLambdaVersionUEPT930VhOd1YTb8nQxPl8j7vyp8aRp3WGF6ZgDhwQ"
+        "Ref": "RemoveConsumerLambdaVersionqINRudSuR3V7V580jGzf7XrFnN22LbDcb7L0US6aQ"
+      }
+    },
+    "CreateConsumerLambdaFunctionQualifiedArn": {
+      "Description": "Current Lambda function version",
+      "Value": {
+        "Ref": "CreateConsumerLambdaVersionXQkPgkWUhKY2gZMRIaIfuAGEDLUKFrGpoozZp0s36Q"
       }
     },
     "GetConsumersLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetConsumersLambdaVersionmctCSKfZ53h5xZYfZa3acTE90fwMhurNCz9k4o8Pgg"
-      }
-    },
-    "DeleteSubscriptionLambdaFunctionQualifiedArn": {
-      "Description": "Current Lambda function version",
-      "Value": {
-        "Ref": "DeleteSubscriptionLambdaVersionl7g84KZ7f6zhGswOYGiDp8MHorLbrqWchrPIJH1Z0k"
+        "Ref": "GetConsumersLambdaVersionpHlkco5ajuv3RuOEAChBmBSJNYQJoZhHTF4hwxsGA"
       }
     },
     "IngressLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "IngressLambdaVersionOPo7AsE2RJ3ssvvB3XZdijN6yVQ6Op9OoFIGq45rcQU"
+        "Ref": "IngressLambdaVersionorYoqrMQbTyQfswTWgmTLV41YLbP8aX0I7bQk9zYY4"
       }
     },
     "WebhookLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "WebhookLambdaVersion8WDfPjiGgBSAFK4Wv4nREZpFW5fRZeAyRymrPsxC3j4"
+        "Ref": "WebhookLambdaVersionibOohwr0rZLxmImnN19HLrsEUsOs9IAb6qJqDGg"
       }
     },
     "ServiceEndpoint": {

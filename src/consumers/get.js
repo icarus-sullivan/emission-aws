@@ -3,10 +3,10 @@ import events from '../registry';
 
 const handler = async ({ data }) => {
   if (!data.id) {
-    throw new ApiError('An id is required to update this resource');
+    throw new ApiError('No id provided');
   }
 
-  return events.update(data);
+  return events.get(data.id);
 };
 
 export default wrapper(handler);

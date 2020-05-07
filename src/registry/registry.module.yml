@@ -1,32 +1,42 @@
 
 provider:
   environment:
-    REGISTRY_BUCKET: ${self:custom.registry.name}
+    EVENT_TABLE: ${self:custom.ddb.name}
+
 
 custom:
-  registry:
-    name: registry-${self:custom.stage}-bucket
-
-    arn:
-      Fn::GetAtt:
-        - RegistryBucket
-        - Arn
+  ddb:
+    name: event-${self:provider.stage}-table
 
     role:
       Effect: Allow
       Action:
-        - 's3:PutObject'
-        - 's3:PutObjectAcl'
-        - 's3:GetObject'
-        - 's3:GetObjectAcl'
-        - 's3:DeleteObject'
+        - 'dynamodb:*'
       Resource:
-        - arn:aws:s3:::${self:custom.registry.name}
-        - arn:aws:s3:::${self:custom.registry.name}/*
+        - arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.ddb.name}
+        - arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.ddb.name}/*
 
 resources:
   Resources: 
-    RegistryBucket:
-      Type: AWS::S3::Bucket
+    EventTabel:
+      Type: AWS::DynamoDB::Table
       Properties:
-        BucketName: ${self:custom.registry.name}
+        TableName: ${self:custom.ddb.name}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: hid
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+        GlobalSecondaryIndexes:
+          -
+            IndexName: HashGSI
+            KeySchema:
+              -
+                AttributeName: hid
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL

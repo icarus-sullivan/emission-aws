@@ -1,8 +1,9 @@
+import { wrapper } from '@teleology/lambda-api';
+import { merge } from 'lodash';
 import fanout from '../fanout';
 
-const { wrapper } = require('@teleology/lambda-api');
-const { merge } = require('lodash');
-const { getRegistry } = require('../registry');
+import hash from '../utils/hash';
+import events from '../registry';
 
 const handler = async ({ headers, data }) => {
   console.log(
@@ -16,16 +17,15 @@ const handler = async ({ headers, data }) => {
     ),
   );
 
-  const { eventKey, payload } = data;
+  const { hid, eventKey, payload } = data;
 
   // Get keyed consumers
-  const consumers = await getRegistry({ eventKey });
-
-  // Convert to array
-  const consumersArray = Object.values(consumers);
+  const consumers = await events.query({
+    hid: hid || hash(eventKey),
+  });
 
   // Merge incoming payload with possible consumer defaults
-  const consumerEvents = consumersArray.map((it) => merge(it, { payload }));
+  const consumerEvents = consumers.map((it) => merge(it, { payload }));
 
   // fanout
   await Promise.all(consumerEvents.map(fanout));
