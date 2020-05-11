@@ -5,32 +5,19 @@ import fanout from '../fanout';
 import hash from '../utils/hash';
 import events from '../registry';
 
-const handler = async ({ headers, data }) => {
-  console.log(
-    JSON.stringify(
-      {
-        headers,
-        data,
-      },
-      null,
-      2,
-    ),
-  );
-
-  const { hid, eventKey, payload } = data;
-
+const handler = async ({ hid, type, payload = {} }) => {
   // Get keyed consumers
   const consumers = await events.query({
-    hid: hid || hash(eventKey),
+    hid: hid || hash(type),
   });
 
   // Merge incoming payload with possible consumer defaults
   const consumerEvents = consumers.map((it) => merge(it, { payload }));
 
   // fanout
-  await Promise.all(consumerEvents.map(fanout));
+  const results = await Promise.all(consumerEvents.map(fanout));
 
-  return { status: 'ok', success: true };
+  return results.filter(Boolean);
 };
 
 export default wrapper(handler);

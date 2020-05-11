@@ -1,4 +1,4 @@
-import dynamo from './dynamo';
+import dynamo from '@teleology/dynamo';
 
 export default dynamo({
   table: process.env.EVENT_TABLE,
@@ -6,7 +6,7 @@ export default dynamo({
   indexes: [
     {
       key: 'hid',
-      value: 'HashGSI',
+      name: 'HashGSI',
     },
   ],
 });

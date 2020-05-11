@@ -5,12 +5,12 @@ import hash from '../utils/hash';
 import events from '../registry';
 
 const handler = async ({ data }) => {
-  const { eventKey, ...item } = data;
+  const { subscription, ...item } = data;
 
   return events.create({
     id: uuid(),
-    hid: hash(eventKey),
-    eventKey,
+    hid: hash(subscription),
+    subscription,
     ...item,
   });
 };

@@ -6,7 +6,7 @@ const handler = async ({ data }) => {
     throw new ApiError('An id is required to update this resource');
   }
 
-  return events.delete(data);
+  return events.delete(data.id);
 };
 
 export default wrapper(handler);

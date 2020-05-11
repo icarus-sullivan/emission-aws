@@ -2,11 +2,22 @@
 functions: 
   ingress:
     handler: src/ingress/index.default
-    timeout: 30
-    events:
-      - http:
-          path: ingress
-          method: put
-          cors: true
+    timeout: 300
     iamRoleStatements:
+      # DynamoDB
       - ${self:custom.ddb.role}
+
+      # Lambda 
+      - Effect: Allow
+        Action:
+          - 'lambda:InvokeFunction'
+        Resource:
+          - arn:aws:lambda:${self:provider.region}:*:function:*
+
+      #  SNS 
+      - Effect: Allow
+        Action:
+          - 'sns:Publish'
+          - 'sns:SetSMSAttributes'
+        Resource:
+          - '*'

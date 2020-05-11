@@ -1,9 +1,11 @@
 import axios from 'axios';
 
-export default async (payload) => {
-  try {
-    await axios(payload);
-  } catch (e) {
-    console.error('webhook', e);
-  }
-};
+// Pull out specifically applies to this fanout type
+export default async ({ url, method, data, params, headers }) =>
+  axios({
+    url,
+    method,
+    data,
+    params,
+    headers,
+  });

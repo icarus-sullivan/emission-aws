@@ -187,7 +187,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/emission/dev/1588834704099-2020-05-07T06:58:24.099Z/getConsumer.zip"
+          "S3Key": "serverless/emission/dev/1589177500286-2020-05-11T06:11:40.286Z/getConsumer.zip"
         },
         "FunctionName": "emission-dev-getConsumer",
         "Handler": "src/consumers/get.default",
@@ -211,14 +211,14 @@
         "GetConsumerLogGroup"
       ]
     },
-    "GetConsumerLambdaVersiondCl6F0G1fcjZscCa342KxtwJpkNZ9xLbdKrwjLLHW8": {
+    "GetConsumerLambdaVersionEz9E4H9aQsgNp85ZkGs5WiGwBtO0DaFatrrNiSIg": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetConsumerLambdaFunction"
         },
-        "CodeSha256": "Qo5zTrhv8L22hHKmSqVUijzMaVB1PfbPdQOACi/Tr4I="
+        "CodeSha256": "KgrTvoYW9vAC/uojAMbb7jNLWH9vmaqWrdCbahimRDk="
       }
     },
     "UpdateConsumerLambdaFunction": {
@@ -228,7 +228,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/emission/dev/1588834704099-2020-05-07T06:58:24.099Z/updateConsumer.zip"
+          "S3Key": "serverless/emission/dev/1589177500286-2020-05-11T06:11:40.286Z/updateConsumer.zip"
         },
         "FunctionName": "emission-dev-updateConsumer",
         "Handler": "src/consumers/update.default",
@@ -252,14 +252,14 @@
         "UpdateConsumerLogGroup"
       ]
     },
-    "UpdateConsumerLambdaVersionzsBvmYCR3cj3WtBfXtfgurFzvIyrjgQL9zyCfbw4lI": {
+    "UpdateConsumerLambdaVersionOjp9BeRD5yvcLBuD6P3z4mlfap61NdNZ3hc21qVT1hI": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "UpdateConsumerLambdaFunction"
         },
-        "CodeSha256": "uAd2tmtLiNk4RFDX3yH0zAlELOmJS7aSOIJaMZscEJQ="
+        "CodeSha256": "B47hH3vOOmAq4Ks5pZ9qBfhN9s4OWxzAg7MxYoFYDzY="
       }
     },
     "RemoveConsumerLambdaFunction": {
@@ -269,7 +269,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/emission/dev/1588834704099-2020-05-07T06:58:24.099Z/removeConsumer.zip"
+          "S3Key": "serverless/emission/dev/1589177500286-2020-05-11T06:11:40.286Z/removeConsumer.zip"
         },
         "FunctionName": "emission-dev-removeConsumer",
         "Handler": "src/consumers/remove.default",
@@ -293,14 +293,14 @@
         "RemoveConsumerLogGroup"
       ]
     },
-    "RemoveConsumerLambdaVersionqINRudSuR3V7V580jGzf7XrFnN22LbDcb7L0US6aQ": {
+    "RemoveConsumerLambdaVersion5uFnCe8FcRGOImV9X0xZ2Q5HBmHwMKJwITWzxre1k": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "RemoveConsumerLambdaFunction"
         },
-        "CodeSha256": "tmY3pofUNxbpT+weBUj7bGVQnCmBoTHiTma9cKlhHJ4="
+        "CodeSha256": "1RVu2rH+4PpG8uINwkgpA9fJRD9gkJmd7kxQsruR0r8="
       }
     },
     "CreateConsumerLambdaFunction": {
@@ -310,7 +310,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/emission/dev/1588834704099-2020-05-07T06:58:24.099Z/createConsumer.zip"
+          "S3Key": "serverless/emission/dev/1589177500286-2020-05-11T06:11:40.286Z/createConsumer.zip"
         },
         "FunctionName": "emission-dev-createConsumer",
         "Handler": "src/consumers/create.default",
@@ -334,14 +334,14 @@
         "CreateConsumerLogGroup"
       ]
     },
-    "CreateConsumerLambdaVersionXQkPgkWUhKY2gZMRIaIfuAGEDLUKFrGpoozZp0s36Q": {
+    "CreateConsumerLambdaVersion7DRTk3178mi6VPxyHUtJxJMLUmwoGc0SLwnnb8mZw": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "CreateConsumerLambdaFunction"
         },
-        "CodeSha256": "9k00UGfwE3wcL/1yZlLcs+rORJShwa4ZWmbeVFCrETQ="
+        "CodeSha256": "7MpJQa7OC+9bHlRd9Y2IfzjiaKptpk9A9loxizgyvTY="
       }
     },
     "GetConsumersLambdaFunction": {
@@ -351,7 +351,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/emission/dev/1588834704099-2020-05-07T06:58:24.099Z/getConsumers.zip"
+          "S3Key": "serverless/emission/dev/1589177500286-2020-05-11T06:11:40.286Z/getConsumers.zip"
         },
         "FunctionName": "emission-dev-getConsumers",
         "Handler": "src/consumers/list.default",
@@ -375,14 +375,14 @@
         "GetConsumersLogGroup"
       ]
     },
-    "GetConsumersLambdaVersionpHlkco5ajuv3RuOEAChBmBSJNYQJoZhHTF4hwxsGA": {
+    "GetConsumersLambdaVersionINxqiIVUMkX4Wzns8bG9fSlQJF8zpmBV7INJip6nZg": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "GetConsumersLambdaFunction"
         },
-        "CodeSha256": "y/JWAXp0tlC5Crvw1RqPqmkerVbFvaxp/5JCcYY7Mao="
+        "CodeSha256": "xCO/RZpAAWxOfq8v6IYASwZ1Ql2ltuS8s0wI+GL1OF4="
       }
     },
     "IngressLambdaFunction": {
@@ -392,7 +392,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/emission/dev/1588834704099-2020-05-07T06:58:24.099Z/ingress.zip"
+          "S3Key": "serverless/emission/dev/1589177500286-2020-05-11T06:11:40.286Z/ingress.zip"
         },
         "FunctionName": "emission-dev-ingress",
         "Handler": "src/ingress/index.default",
@@ -404,7 +404,7 @@
           ]
         },
         "Runtime": "nodejs12.x",
-        "Timeout": 30,
+        "Timeout": 300,
         "Environment": {
           "Variables": {
             "EVENT_TABLE": "event-dev-table"
@@ -416,14 +416,14 @@
         "IngressLogGroup"
       ]
     },
-    "IngressLambdaVersionorYoqrMQbTyQfswTWgmTLV41YLbP8aX0I7bQk9zYY4": {
+    "IngressLambdaVersionCv9vVkHWqjPr7gMlG8HsjkdVa0vEAn8iEKCwcxwYks": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "IngressLambdaFunction"
         },
-        "CodeSha256": "C6M95+Rtlw54EVErNc6SyxT5H29I87O1aNxEgvPqZlw="
+        "CodeSha256": "yLF8NvsAgg3YJ86Mwh45Mg/7zhdxEqOqIddzgiU/t7k="
       }
     },
     "WebhookLambdaFunction": {
@@ -433,7 +433,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/emission/dev/1588834704099-2020-05-07T06:58:24.099Z/webhook.zip"
+          "S3Key": "serverless/emission/dev/1589177500286-2020-05-11T06:11:40.286Z/webhook.zip"
         },
         "FunctionName": "emission-dev-webhook",
         "Handler": "src/webhook/index.default",
@@ -457,14 +457,14 @@
         "IamRoleLambdaExecution"
       ]
     },
-    "WebhookLambdaVersionibOohwr0rZLxmImnN19HLrsEUsOs9IAb6qJqDGg": {
+    "WebhookLambdaVersionTxvVdoeW7KOSLnXo7c5NDXsAgg96zBPJoGEwY81B4q8": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "WebhookLambdaFunction"
         },
-        "CodeSha256": "QHWJbAi1/FgwYFvBY8TOckXr8aH3L6jv/IuZt1VQAqc="
+        "CodeSha256": "CvAjJjHQcxD3viWZKp4MgVvfVoLCaT3DZRarGC5FnL8="
       }
     },
     "ApiGatewayRestApi": {
@@ -528,21 +528,6 @@
           "Ref": "ApiGatewayResourceConsumers"
         },
         "PathPart": "{hash}",
-        "RestApiId": {
-          "Ref": "ApiGatewayRestApi"
-        }
-      }
-    },
-    "ApiGatewayResourceIngress": {
-      "Type": "AWS::ApiGateway::Resource",
-      "Properties": {
-        "ParentId": {
-          "Fn::GetAtt": [
-            "ApiGatewayRestApi",
-            "RootResourceId"
-          ]
-        },
-        "PathPart": "ingress",
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
         }
@@ -692,51 +677,6 @@
         },
         "ResourceId": {
           "Ref": "ApiGatewayResourceConsumersHashVar"
-        },
-        "RestApiId": {
-          "Ref": "ApiGatewayRestApi"
-        }
-      }
-    },
-    "ApiGatewayMethodIngressOptions": {
-      "Type": "AWS::ApiGateway::Method",
-      "Properties": {
-        "AuthorizationType": "NONE",
-        "HttpMethod": "OPTIONS",
-        "MethodResponses": [
-          {
-            "StatusCode": "200",
-            "ResponseParameters": {
-              "method.response.header.Access-Control-Allow-Origin": true,
-              "method.response.header.Access-Control-Allow-Headers": true,
-              "method.response.header.Access-Control-Allow-Methods": true
-            },
-            "ResponseModels": {}
-          }
-        ],
-        "RequestParameters": {},
-        "Integration": {
-          "Type": "MOCK",
-          "RequestTemplates": {
-            "application/json": "{statusCode:200}"
-          },
-          "ContentHandling": "CONVERT_TO_TEXT",
-          "IntegrationResponses": [
-            {
-              "StatusCode": "200",
-              "ResponseParameters": {
-                "method.response.header.Access-Control-Allow-Origin": "'*'",
-                "method.response.header.Access-Control-Allow-Headers": "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token,X-Amz-User-Agent'",
-                "method.response.header.Access-Control-Allow-Methods": "'OPTIONS,PUT'"
-              },
-              "ResponseTemplates": {
-                "application/json": "#set($origin = $input.params(\"Origin\"))\n#if($origin == \"\") #set($origin = $input.params(\"origin\")) #end\n#if($origin.matches(\".+\")) #set($context.responseOverride.header.Access-Control-Allow-Origin = $origin) #end"
-              }
-            }
-          ]
-        },
-        "ResourceId": {
-          "Ref": "ApiGatewayResourceIngress"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
@@ -958,49 +898,6 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayMethodIngressPut": {
-      "Type": "AWS::ApiGateway::Method",
-      "Properties": {
-        "HttpMethod": "PUT",
-        "RequestParameters": {},
-        "ResourceId": {
-          "Ref": "ApiGatewayResourceIngress"
-        },
-        "RestApiId": {
-          "Ref": "ApiGatewayRestApi"
-        },
-        "ApiKeyRequired": false,
-        "AuthorizationType": "NONE",
-        "Integration": {
-          "IntegrationHttpMethod": "POST",
-          "Type": "AWS_PROXY",
-          "Uri": {
-            "Fn::Join": [
-              "",
-              [
-                "arn:",
-                {
-                  "Ref": "AWS::Partition"
-                },
-                ":apigateway:",
-                {
-                  "Ref": "AWS::Region"
-                },
-                ":lambda:path/2015-03-31/functions/",
-                {
-                  "Fn::GetAtt": [
-                    "IngressLambdaFunction",
-                    "Arn"
-                  ]
-                },
-                "/invocations"
-              ]
-            ]
-          }
-        },
-        "MethodResponses": []
-      }
-    },
     "ApiGatewayMethodWebhookGet": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
@@ -1044,7 +941,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1588834676115": {
+    "ApiGatewayDeployment1589177492155": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -1056,13 +953,11 @@
         "ApiGatewayMethodConsumerIdVarOptions",
         "ApiGatewayMethodConsumerOptions",
         "ApiGatewayMethodConsumersHashVarOptions",
-        "ApiGatewayMethodIngressOptions",
         "ApiGatewayMethodConsumerIdVarGet",
         "ApiGatewayMethodConsumerIdVarPut",
         "ApiGatewayMethodConsumerIdVarDelete",
         "ApiGatewayMethodConsumerPost",
         "ApiGatewayMethodConsumersHashVarGet",
-        "ApiGatewayMethodIngressPut",
         "ApiGatewayMethodWebhookGet"
       ]
     },
@@ -1220,43 +1115,6 @@
         "FunctionName": {
           "Fn::GetAtt": [
             "GetConsumersLambdaFunction",
-            "Arn"
-          ]
-        },
-        "Action": "lambda:InvokeFunction",
-        "Principal": "apigateway.amazonaws.com",
-        "SourceArn": {
-          "Fn::Join": [
-            "",
-            [
-              "arn:",
-              {
-                "Ref": "AWS::Partition"
-              },
-              ":execute-api:",
-              {
-                "Ref": "AWS::Region"
-              },
-              ":",
-              {
-                "Ref": "AWS::AccountId"
-              },
-              ":",
-              {
-                "Ref": "ApiGatewayRestApi"
-              },
-              "/*/*"
-            ]
-          ]
-        }
-      }
-    },
-    "IngressLambdaPermissionApiGateway": {
-      "Type": "AWS::Lambda::Permission",
-      "Properties": {
-        "FunctionName": {
-          "Fn::GetAtt": [
-            "IngressLambdaFunction",
             "Arn"
           ]
         },
@@ -1759,6 +1617,25 @@
                     "arn:aws:dynamodb:us-east-1:*:table/event-dev-table",
                     "arn:aws:dynamodb:us-east-1:*:table/event-dev-table/*"
                   ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "lambda:InvokeFunction"
+                  ],
+                  "Resource": [
+                    "arn:aws:lambda:us-east-1:*:function:*"
+                  ]
+                },
+                {
+                  "Effect": "Allow",
+                  "Action": [
+                    "sns:Publish",
+                    "sns:SetSMSAttributes"
+                  ],
+                  "Resource": [
+                    "*"
+                  ]
                 }
               ]
             }
@@ -1828,43 +1705,43 @@
     "GetConsumerLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetConsumerLambdaVersiondCl6F0G1fcjZscCa342KxtwJpkNZ9xLbdKrwjLLHW8"
+        "Ref": "GetConsumerLambdaVersionEz9E4H9aQsgNp85ZkGs5WiGwBtO0DaFatrrNiSIg"
       }
     },
     "UpdateConsumerLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "UpdateConsumerLambdaVersionzsBvmYCR3cj3WtBfXtfgurFzvIyrjgQL9zyCfbw4lI"
+        "Ref": "UpdateConsumerLambdaVersionOjp9BeRD5yvcLBuD6P3z4mlfap61NdNZ3hc21qVT1hI"
       }
     },
     "RemoveConsumerLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "RemoveConsumerLambdaVersionqINRudSuR3V7V580jGzf7XrFnN22LbDcb7L0US6aQ"
+        "Ref": "RemoveConsumerLambdaVersion5uFnCe8FcRGOImV9X0xZ2Q5HBmHwMKJwITWzxre1k"
       }
     },
     "CreateConsumerLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "CreateConsumerLambdaVersionXQkPgkWUhKY2gZMRIaIfuAGEDLUKFrGpoozZp0s36Q"
+        "Ref": "CreateConsumerLambdaVersion7DRTk3178mi6VPxyHUtJxJMLUmwoGc0SLwnnb8mZw"
       }
     },
     "GetConsumersLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "GetConsumersLambdaVersionpHlkco5ajuv3RuOEAChBmBSJNYQJoZhHTF4hwxsGA"
+        "Ref": "GetConsumersLambdaVersionINxqiIVUMkX4Wzns8bG9fSlQJF8zpmBV7INJip6nZg"
       }
     },
     "IngressLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "IngressLambdaVersionorYoqrMQbTyQfswTWgmTLV41YLbP8aX0I7bQk9zYY4"
+        "Ref": "IngressLambdaVersionCv9vVkHWqjPr7gMlG8HsjkdVa0vEAn8iEKCwcxwYks"
       }
     },
     "WebhookLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "WebhookLambdaVersionibOohwr0rZLxmImnN19HLrsEUsOs9IAb6qJqDGg"
+        "Ref": "WebhookLambdaVersionTxvVdoeW7KOSLnXo7c5NDXsAgg96zBPJoGEwY81B4q8"
       }
     },
     "ServiceEndpoint": {
