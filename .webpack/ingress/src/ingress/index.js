@@ -94,7 +94,7 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _webhook__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./webhook */ \"./src/fanout/webhook.js\");\n/* harmony import */ var _lambda__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./lambda */ \"./src/fanout/lambda.js\");\n/* harmony import */ var _sms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./sms */ \"./src/fanout/sms.js\");\n/* harmony import */ var _unimplemented__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./unimplemented */ \"./src/fanout/unimplemented.js\");\n\n\n\n\nconst fanoutHandlers = {\n  webhook: _webhook__WEBPACK_IMPORTED_MODULE_0__[\"default\"],\n  lambda: _lambda__WEBPACK_IMPORTED_MODULE_1__[\"default\"],\n  sms: _sms__WEBPACK_IMPORTED_MODULE_2__[\"default\"],\n  '*': _unimplemented__WEBPACK_IMPORTED_MODULE_3__[\"default\"]\n};\n/* harmony default export */ __webpack_exports__[\"default\"] = (async ({\n  id,\n  type,\n  payload\n}) => {\n  try {\n    throw new Error('no');\n    await (fanoutHandlers[type] || fanoutHandlers['*'])(payload);\n  } catch (e) {\n    console.error(JSON.stringify({\n      id,\n      message: e.message,\n      stack: e.stack\n    }, null, 2));\n  }\n});\n\n//# sourceURL=webpack:///./src/fanout/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _webhook__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./webhook */ \"./src/fanout/webhook.js\");\n/* harmony import */ var _lambda__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./lambda */ \"./src/fanout/lambda.js\");\n/* harmony import */ var _sms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./sms */ \"./src/fanout/sms.js\");\n/* harmony import */ var _unimplemented__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./unimplemented */ \"./src/fanout/unimplemented.js\");\n\n\n\n\nconst fanoutHandlers = {\n  webhook: _webhook__WEBPACK_IMPORTED_MODULE_0__[\"default\"],\n  lambda: _lambda__WEBPACK_IMPORTED_MODULE_1__[\"default\"],\n  sms: _sms__WEBPACK_IMPORTED_MODULE_2__[\"default\"],\n  '*': _unimplemented__WEBPACK_IMPORTED_MODULE_3__[\"default\"]\n};\n/* harmony default export */ __webpack_exports__[\"default\"] = (async ({\n  id,\n  type,\n  payload\n}) => {\n  try {\n    await (fanoutHandlers[type] || fanoutHandlers['*'])(payload);\n  } catch (e) {\n    console.error(JSON.stringify({\n      id,\n      message: e.message,\n      stack: e.stack\n    }, null, 2));\n  }\n});\n\n//# sourceURL=webpack:///./src/fanout/index.js?");
 
 /***/ }),
 
@@ -154,7 +154,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var axio
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _teleology_lambda_api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @teleology/lambda-api */ \"@teleology/lambda-api\");\n/* harmony import */ var _teleology_lambda_api__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_teleology_lambda_api__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash */ \"lodash\");\n/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_1__);\n/* harmony import */ var _fanout__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../fanout */ \"./src/fanout/index.js\");\n/* harmony import */ var _utils_hash__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/hash */ \"./src/utils/hash.js\");\n/* harmony import */ var _registry__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../registry */ \"./src/registry/index.js\");\n\n\n\n\n\n\nconst handler = async ({\n  hid,\n  type,\n  payload = {}\n}) => {\n  // Get keyed consumers\n  const consumers = await _registry__WEBPACK_IMPORTED_MODULE_4__[\"default\"].query({\n    hid: hid || Object(_utils_hash__WEBPACK_IMPORTED_MODULE_3__[\"default\"])(type)\n  }); // Merge incoming payload with possible consumer defaults\n\n  const consumerEvents = consumers.map(it => Object(lodash__WEBPACK_IMPORTED_MODULE_1__[\"merge\"])(it, {\n    payload\n  })); // fanout\n\n  const results = await Promise.all(consumerEvents.map(_fanout__WEBPACK_IMPORTED_MODULE_2__[\"default\"]));\n  return results.filter(Boolean);\n};\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (Object(_teleology_lambda_api__WEBPACK_IMPORTED_MODULE_0__[\"wrapper\"])(handler));\n\n//# sourceURL=webpack:///./src/ingress/index.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash */ \"lodash\");\n/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _fanout__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../fanout */ \"./src/fanout/index.js\");\n/* harmony import */ var _utils_hash__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/hash */ \"./src/utils/hash.js\");\n/* harmony import */ var _registry__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../registry */ \"./src/registry/index.js\");\n\n\n\n\n/* harmony default export */ __webpack_exports__[\"default\"] = (async ({\n  hid,\n  type,\n  payload = {}\n}) => {\n  // Get keyed consumers\n  const consumers = await _registry__WEBPACK_IMPORTED_MODULE_3__[\"default\"].query({\n    hid: hid || Object(_utils_hash__WEBPACK_IMPORTED_MODULE_2__[\"default\"])(type)\n  }); // Merge incoming payload with possible consumer defaults\n\n  const consumerEvents = consumers.map(it => Object(lodash__WEBPACK_IMPORTED_MODULE_0__[\"merge\"])(it, {\n    payload\n  })); // fanout\n\n  const results = await Promise.all(consumerEvents.map(_fanout__WEBPACK_IMPORTED_MODULE_1__[\"default\"]));\n  return results.filter(Boolean);\n});\n\n//# sourceURL=webpack:///./src/ingress/index.js?");
 
 /***/ }),
 
@@ -190,17 +190,6 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var cryp
 /***/ (function(module, exports) {
 
 eval("module.exports = require(\"@teleology/dynamo\");\n\n//# sourceURL=webpack:///external_%22@teleology/dynamo%22?");
-
-/***/ }),
-
-/***/ "@teleology/lambda-api":
-/*!****************************************!*\
-  !*** external "@teleology/lambda-api" ***!
-  \****************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-eval("module.exports = require(\"@teleology/lambda-api\");\n\n//# sourceURL=webpack:///external_%22@teleology/lambda-api%22?");
 
 /***/ }),
 

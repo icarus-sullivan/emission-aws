@@ -1,11 +1,10 @@
-import { wrapper } from '@teleology/lambda-api';
 import { merge } from 'lodash';
 import fanout from '../fanout';
 
 import hash from '../utils/hash';
 import events from '../registry';
 
-const handler = async ({ hid, type, payload = {} }) => {
+export default async ({ hid, type, payload = {} }) => {
   // Get keyed consumers
   const consumers = await events.query({
     hid: hid || hash(type),
@@ -19,5 +18,3 @@ const handler = async ({ hid, type, payload = {} }) => {
 
   return results.filter(Boolean);
 };
-
-export default wrapper(handler);
