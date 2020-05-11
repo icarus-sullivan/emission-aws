@@ -3,7 +3,7 @@ import events from '../registry';
 
 const handler = async ({ data }) => {
   if (!data.id) {
-    throw new ApiError('An id is required to update this resource');
+    throw new ApiError('An id is required to delete this resource');
   }
 
   return events.delete(data.id);
