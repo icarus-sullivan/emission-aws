@@ -4,5 +4,5 @@ yarn-error.log*
 lib/
 .coverage/
 node_modules/
-.serverless
-.webpack
+.serverless/
+.webpack/
