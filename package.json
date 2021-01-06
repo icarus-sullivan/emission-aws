@@ -35,7 +35,7 @@
     "@teleology/dynamo": "^0.0.2",
     "@teleology/lambda-api": "^0.1.0",
     "aws-sdk": "^2.673.0",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "lodash": "^4.17.15",
     "uuid": "^7.0.3"
   }
